@@ -350,7 +350,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
     <div class="grid2">
       <div>
         <label for="notes">Melody Notes</label>
-        <textarea id="notes">E4 F#4 G#4 A4 B4 C#5 D#5 E5 D#5 C#5 B4 A4 G#4 F#4 E4 D#4 E4</textarea>
+        <textarea id="notes">E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4 E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 D4 C4 C4</textarea>
         <p class="hint">Separate notes with spaces — e.g. C4 E4 G4 B4. Click note chips below to remove individual notes.</p>
       </div>
       <div>
@@ -386,17 +386,17 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
       <h2>III &nbsp; Shape the Tone</h2>
       <div class="grid2">
         <div>
-          <label for="tempo">Tempo <span id="tempoVal" class="pill">96 BPM</span></label>
-          <input type="range" id="tempo" min="40" max="200" value="96">
+          <label for="tempo">Tempo <span id="tempoVal" class="pill">108 BPM</span></label>
+          <input type="range" id="tempo" min="40" max="200" value="108">
         </div>
         <div>
           <label for="noteLength">Articulation <span id="noteLengthVal" class="pill">Legato</span></label>
-          <input type="range" id="noteLength" min="25" max="140" value="110">
+          <input type="range" id="noteLength" min="25" max="140" value="95">
           <p class="hint">Staccato = crisp &amp; detached. Legato = flowing &amp; connected.</p>
         </div>
         <div>
           <label for="brightness">Brilliance</label>
-          <input type="range" id="brightness" min="200" max="2200" value="700">
+          <input type="range" id="brightness" min="200" max="2200" value="950">
         </div>
         <div>
           <label for="fullness">Resonance</label>
@@ -404,7 +404,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
         </div>
         <div>
           <label for="swing">Rubato / Timing</label>
-          <input type="range" id="swing" min="0" max="45" value="8">
+          <input type="range" id="swing" min="0" max="45" value="6">
         </div>
         <div>
           <label for="detectSensitivity">Detection Sensitivity</label>
@@ -417,7 +417,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
     <section class="card">
       <h2>IV &nbsp; Layers &amp; Pedal</h2>
       <div class="toggles">
-        <label class="toggle"><input type="checkbox" id="percussion" checked> Metronome pulse</label>
+        <label class="toggle"><input type="checkbox" id="percussion"> Metronome pulse</label>
         <label class="toggle"><input type="checkbox" id="bass" checked> Bass octave</label>
         <label class="toggle"><input type="checkbox" id="ocean"> Hall reverb</label>
         <label class="toggle"><input type="checkbox" id="harmony" checked> Inner harmony</label>
@@ -469,12 +469,72 @@ const noteMap = {
 const midiNames = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
 const presets = {
-  baroque: {tempo:108,brightness:950,fullness:42,swing:6,noteLength:75, percussion:true, bass:true, ocean:false,harmony:true},
-  romantic:{tempo:80, brightness:650,fullness:68,swing:18,noteLength:125,percussion:false,bass:true, ocean:false,harmony:true},
-  nocturne:{tempo:58, brightness:420,fullness:60,swing:22,noteLength:138,percussion:false,bass:true, ocean:true, harmony:true},
-  sonata:  {tempo:132,brightness:900,fullness:50,swing:10,noteLength:82, percussion:true, bass:true, ocean:false,harmony:true},
-  waltz:   {tempo:116,brightness:700,fullness:44,swing:28,noteLength:90, percussion:true, bass:true, ocean:false,harmony:true},
-  etude:   {tempo:168,brightness:1400,fullness:36,swing:8, noteLength:58, percussion:true, bass:false,ocean:false,harmony:false},
+  baroque: {
+    tempo:108,
+    brightness:950,
+    fullness:55,
+    swing:6,
+    noteLength:95,
+    percussion:false,
+    bass:true,
+    ocean:false,
+    harmony:true
+  },
+  romantic:{
+    tempo:80,
+    brightness:650,
+    fullness:68,
+    swing:18,
+    noteLength:125,
+    percussion:false,
+    bass:true,
+    ocean:false,
+    harmony:true
+  },
+  nocturne:{
+    tempo:58,
+    brightness:420,
+    fullness:60,
+    swing:22,
+    noteLength:138,
+    percussion:false,
+    bass:true,
+    ocean:true,
+    harmony:true
+  },
+  sonata: {
+    tempo:116,
+    brightness:900,
+    fullness:50,
+    swing:10,
+    noteLength:95,
+    percussion:false,
+    bass:true,
+    ocean:false,
+    harmony:true
+  },
+  waltz: {
+    tempo:116,
+    brightness:700,
+    fullness:44,
+    swing:28,
+    noteLength:90,
+    percussion:false,
+    bass:true,
+    ocean:false,
+    harmony:true
+  },
+  etude: {
+    tempo:168,
+    brightness:1400,
+    fullness:36,
+    swing:8,
+    noteLength:58,
+    percussion:true,
+    bass:false,
+    ocean:false,
+    harmony:false
+  },
 };
 
 let audioCtx = null;
