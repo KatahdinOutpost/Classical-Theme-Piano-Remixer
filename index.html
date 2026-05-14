@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Classical Piano Remixer - Compose & Arrange</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
+:root{
+  --ivory:#F5F0E8;--parchment:#EDE4D0;--gold:#C9A84C;--gold-light:#E8C96B;--gold-dark:#A07830;
+  --navy:#0D1B2A;--deep-navy:#071320;--burgundy:#6B1F2A;--crimson:#8B2635;
+  --cream:#FAF7F0;--white:rgba(255,255,255,.92);--shadow:0 24px 72px rgba(7,19,32,.55);
+  --radius:6px;--radius-lg:12px;
+  --border:1px solid rgba(201,168,76,.28);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:'Lato',Georgia,serif;
+  color:var(--ivory);
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(107,31,42,.45),transparent 48%),
+    radial-gradient(ellipse at 85% 5%,rgba(13,27,42,.9),transparent 40%),
+    linear-gradient(160deg,#0D1B2A 0%,#12263A 40%,#1A1008 100%);
+  overflow-x:hidden;
+}
+/* Ornate background texture */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(201,168,76,.04) 80px),
+    repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(201,168,76,.04) 80px);
+  pointer-events:none;z-index:0;
+}
+/* Gold decorative top border */
+body::after{
+  content:'';position:fixed;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+  z-index:10;
+}
+
+header{
+  position:relative;z-index:1;
+  max-width:1180px;margin:0 auto;
+  padding:52px 24px 20px;text-align:center;
+}
+.eyebrow{
+  display:inline-flex;gap:10px;align-items:center;
+  padding:8px 20px;
+  background:rgba(201,168,76,.12);
+  border:1px solid rgba(201,168,76,.4);
+  border-radius:2px;
+  font-family:'Lato',sans-serif;font-weight:700;font-size:.82rem;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-light);
+}
+h1{
+  margin:20px 0 0;
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(2.4rem,6vw,5.2rem);
+  font-weight:900;letter-spacing:-1px;line-height:.92;
+  background:linear-gradient(135deg,var(--gold-light),var(--ivory),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.tagline{
+  font-size:1.05rem;margin:16px auto 0;max-width:760px;
+  line-height:1.6;font-weight:300;opacity:.82;
+  font-style:italic;color:var(--parchment);
+}
+/* Decorative rule */
+.rule{
+  display:flex;align-items:center;gap:16px;
+  margin:22px auto 0;max-width:500px;
+}
+.rule::before,.rule::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.rule span{color:var(--gold);font-size:1.1rem;}
+
+main{
+  position:relative;z-index:1;
+  max-width:1180px;margin:22px auto 80px;
+  padding:0 24px;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:20px;
+}
+.card{
+  background:rgba(13,27,42,.82);
+  border:var(--border);
+  border-top:2px solid rgba(201,168,76,.45);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow),inset 0 1px 0 rgba(201,168,76,.15);
+  padding:26px;
+  backdrop-filter:blur(18px);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.6),transparent);
+}
+.full{grid-column:1/-1}
+.stack{display:grid;gap:20px}
+
+h2{
+  margin:0 0 16px;
+  font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;
+  color:var(--gold-light);letter-spacing:.5px;
+  display:flex;align-items:center;gap:10px;
+}
+h2::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.4),transparent)}
+h3{
+  margin:18px 0 10px;font-size:.88rem;
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(201,168,76,.75);
+}
+label{
+  display:block;font-weight:700;margin-bottom:8px;
+  font-size:.86rem;letter-spacing:1.2px;text-transform:uppercase;
+  color:rgba(245,240,232,.72);
+}
+textarea,input[type=text]{
+  width:100%;
+  border:1px solid rgba(201,168,76,.3);
+  border-radius:var(--radius);
+  padding:13px 15px;font-size:.95rem;
+  background:rgba(7,19,32,.7);
+  color:var(--ivory);outline:none;
+  font-family:'Lato',monospace;
+  transition:.2s;
+}
+textarea:focus,input[type=text]:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(201,168,76,.15);
+}
+textarea{min-height:110px;resize:vertical;line-height:1.6;}
+input[type=range]{
+  width:100%;padding:0;
+  accent-color:var(--gold);
+  -webkit-appearance:none;height:4px;
+  background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,.25) 0%);
+  border-radius:2px;cursor:pointer;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--gold);
+  border:2px solid var(--deep-navy);
+  box-shadow:0 2px 8px rgba(201,168,76,.5);
+}
+.hint{font-size:.82rem;opacity:.62;margin:8px 0 0;line-height:1.5;font-style:italic;}
+.small{font-size:.82rem;opacity:.68;line-height:1.42;font-style:italic;}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+button{
+  border:1px solid rgba(201,168,76,.35);
+  border-radius:3px;
+  padding:12px 18px;
+  font-family:'Lato',sans-serif;font-weight:700;font-size:.86rem;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ivory);
+  background:rgba(13,27,42,.8);
+  cursor:pointer;
+  transition:.15s;white-space:nowrap;
+  position:relative;overflow:hidden;
+}
+button::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.08),transparent);
+  opacity:0;transition:.15s;
+}
+button:hover{
+  border-color:var(--gold);color:var(--gold-light);
+  transform:translateY(-1px);
+  box-shadow:0 6px 24px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.2);
+}
+button:hover::before{opacity:1}
+.primary{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
+  border-color:var(--gold-light);color:var(--deep-navy);
+  font-size:.92rem;padding:15px 24px;font-weight:900;
+  box-shadow:0 8px 28px rgba(201,168,76,.3);
+}
+.primary:hover{box-shadow:0 12px 36px rgba(201,168,76,.45);color:var(--deep-navy)}
+.dark{
+  background:rgba(107,31,42,.6);
+  border-color:rgba(139,38,53,.6);color:var(--parchment);
+}
+.dark:hover{background:rgba(107,31,42,.85);border-color:var(--crimson)}
+.green{
+  background:rgba(22,60,40,.6);
+  border-color:rgba(46,120,80,.5);color:#7ECFA8;
+}
+.green:hover{background:rgba(22,60,40,.9);border-color:#7ECFA8}
+.ghost{
+  background:transparent;
+  border-color:rgba(201,168,76,.2);color:rgba(245,240,232,.6);
+}
+.active{
+  background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(201,168,76,.12));
+  border-color:var(--gold);color:var(--gold-light);
+  box-shadow:inset 0 0 12px rgba(201,168,76,.1);
+}
+
+.toggles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.toggle{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(7,19,32,.5);
+  padding:12px 14px;border-radius:var(--radius);
+  font-weight:700;font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;
+  border:1px solid rgba(201,168,76,.15);color:rgba(245,240,232,.78);
+  cursor:pointer;transition:.15s;
+}
+.toggle:hover{border-color:rgba(201,168,76,.35);background:rgba(201,168,76,.06)}
+.toggle input[type=checkbox]{
+  width:16px;height:16px;accent-color:var(--gold);cursor:pointer;
+}
+
+/* Piano visualizer */
+.visualizer{
+  height:130px;display:flex;align-items:flex-end;gap:5px;
+  padding:12px;border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(7,19,32,.9),rgba(13,27,42,.7));
+  overflow:hidden;
+  border:1px solid rgba(201,168,76,.18);
+  position:relative;
+}
+.visualizer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent);
+}
+.bar{
+  flex:1;min-width:6px;
+  border-radius:2px 2px 0 0;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold-dark),var(--burgundy));
+  height:16%;
+  animation:swell 1.4s ease-in-out infinite alternate;
+  animation-play-state:paused;
+  opacity:.7;
+}
+.bar:nth-child(even){animation-duration:1.7s}
+.bar:nth-child(3n){animation-duration:2s}
+.playing .bar{animation-play-state:running;opacity:1}
+@keyframes swell{
+  from{transform:scaleY(.3);opacity:.5}
+  to{transform:scaleY(1.1);opacity:1}
+}
+
+.status{
+  min-height:26px;margin:12px 0;
+  font-weight:700;font-size:.88rem;
+  color:var(--gold-light);letter-spacing:.5px;font-style:italic;
+}
+
+/* Note chips */
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:9px;margin-top:12px}
+.note-chip{
+  border-radius:3px;
+  background:rgba(7,19,32,.7);
+  border:1px solid rgba(201,168,76,.3);
+  padding:10px 6px;text-align:center;
+  font-weight:700;font-size:.9rem;cursor:pointer;user-select:none;
+  transition:.15s;color:var(--ivory);
+}
+.note-chip:hover{border-color:var(--crimson);color:var(--crimson);background:rgba(107,31,42,.3)}
+.note-chip small{display:block;opacity:.45;font-weight:400;margin-top:3px;font-size:.72rem;letter-spacing:.5px;font-style:italic}
+
+/* Piano key pad */
+.pad{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.pad button{
+  border-radius:2px;padding:18px 4px 14px;
+  background:linear-gradient(180deg,var(--ivory) 70%,#D4CFC4);
+  color:var(--deep-navy);border:2px solid rgba(13,27,42,.4);
+  font-size:.78rem;letter-spacing:.3px;font-weight:700;
+  box-shadow:0 4px 0 rgba(0,0,0,.5),0 6px 12px rgba(0,0,0,.4);
+  text-transform:none;
+  transition:.08s;
+}
+.pad button:hover{
+  background:linear-gradient(180deg,#fff 70%,#E8E3D8);
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(0,0,0,.5),0 4px 8px rgba(0,0,0,.4);
+  color:var(--deep-navy);border-color:rgba(13,27,42,.5);
+}
+
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:2px;padding:4px 10px;
+  background:rgba(201,168,76,.12);
+  border:1px solid rgba(201,168,76,.3);
+  font-size:.8rem;font-weight:700;color:var(--gold-light);letter-spacing:.5px;
+}
+
+/* Milestones */
+.milestones{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+.milestone{
+  background:rgba(7,19,32,.6);
+  border-radius:3px;padding:10px 12px;font-size:.78rem;font-weight:700;
+  border:1px solid rgba(201,168,76,.15);
+  text-align:center;letter-spacing:.5px;
+  color:rgba(245,240,232,.65);
+}
+.done{color:var(--gold-light);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.35)}
+
+/* Drop zone */
+.drop{
+  border:2px dashed rgba(201,168,76,.3);
+  border-radius:var(--radius);padding:20px;
+  background:rgba(7,19,32,.4);text-align:center;
+  font-size:.88rem;color:rgba(245,240,232,.65);
+  transition:.2s;line-height:1.6;
+}
+.drop.drag{border-color:var(--gold);background:rgba(201,168,76,.08);color:var(--gold-light)}
+
+.progressWrap{margin-top:10px;height:3px;border-radius:999px;background:rgba(201,168,76,.15);overflow:hidden}
+.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:999px;transition:width .18s}
+
+footer{
+  position:relative;z-index:1;
+  max-width:900px;margin:0 auto 38px;padding:0 24px;
+  text-align:center;opacity:.55;font-size:.82rem;line-height:1.6;
+  font-style:italic;color:var(--parchment);
+}
+footer::before{
+  content:'— ';color:var(--gold);opacity:.6;
+}
+footer::after{
+  content:' —';color:var(--gold);opacity:.6;
+}
+
+@media(max-width:900px){
+  main{grid-template-columns:1fr}
+  .milestones{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .grid2,.grid3,.toggles,.pad{grid-template-columns:1fr}
+  .milestones{grid-template-columns:repeat(2,1fr)}
+  .row button{width:100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">🎹 Classical Piano Arranger &nbsp;·&nbsp; Compose &amp; Perform</div>
+  <h1>Classical Piano Remixer</h1>
+  <p class="tagline">Arrange and perform elegant piano interpretations from typed notes, keyboard melodies, text scores, or imported audio — in the spirit of the great composers.</p>
+  <div class="rule"><span>✦</span></div>
+  <div class="milestones">
+    <div class="milestone done">✓ Classical UI</div>
+    <div class="milestone done">✓ Note Creation</div>
+    <div class="milestone done">✓ Style Presets</div>
+    <div class="milestone done">✓ Score Editor</div>
+    <div class="milestone done">✓ WAV Export</div>
+    <div class="milestone done">✓ Dynamics &amp; Pedal</div>
+  </div>
+</header>
+
+<main>
+  <!-- SECTION 1 -->
+  <section class="card full">
+    <h2>I &nbsp; Enter or Import a Score</h2>
+    <div class="grid2">
+      <div>
+        <label for="notes">Melody Notes</label>
+        <textarea id="notes">E4 F#4 G#4 A4 B4 C#5 D#5 E5 D#5 C#5 B4 A4 G#4 F#4 E4 D#4 E4</textarea>
+        <p class="hint">Separate notes with spaces — e.g. C4 E4 G4 B4. Click note chips below to remove individual notes.</p>
+      </div>
+      <div>
+        <label>Import Score or Audio</label>
+        <div class="drop" id="drop">Drop a .txt, .csv, .mp3, .wav, or .m4a file here.<br><span class="small">Audio detection works best with solo piano, voice, or single-line melody recordings.</span></div>
+        <div class="progressWrap"><div id="progress" class="progress"></div></div>
+        <div class="row" style="margin-top:14px">
+          <input id="fileInput" type="file" accept=".txt,.csv,.mp3,.wav,.m4a,audio/*" style="display:none">
+          <button class="ghost" id="chooseFile">Import File</button>
+          <button class="green" id="generate">Generate Classical Melody</button>
+          <button class="ghost" id="clear">Clear</button>
+        </div>
+      </div>
+    </div>
+    <h3>Touch the keys</h3>
+    <div class="pad" id="pad"></div>
+  </section>
+
+  <!-- LEFT COLUMN -->
+  <section class="stack">
+    <section class="card">
+      <h2>II &nbsp; Select a Style</h2>
+      <div class="grid3">
+        <button class="preset active" data-preset="baroque">🕯 Baroque</button>
+        <button class="preset" data-preset="romantic">🌹 Romantic</button>
+        <button class="preset" data-preset="nocturne">🌙 Nocturne</button>
+        <button class="preset" data-preset="sonata">📜 Sonata</button>
+        <button class="preset" data-preset="waltz">💃 Waltz</button>
+        <button class="preset" data-preset="etude">⚡ Étude</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>III &nbsp; Shape the Tone</h2>
+      <div class="grid2">
+        <div>
+          <label for="tempo">Tempo <span id="tempoVal" class="pill">96 BPM</span></label>
+          <input type="range" id="tempo" min="40" max="200" value="96">
+        </div>
+        <div>
+          <label for="noteLength">Articulation <span id="noteLengthVal" class="pill">Legato</span></label>
+          <input type="range" id="noteLength" min="25" max="140" value="110">
+          <p class="hint">Staccato = crisp &amp; detached. Legato = flowing &amp; connected.</p>
+        </div>
+        <div>
+          <label for="brightness">Brilliance</label>
+          <input type="range" id="brightness" min="200" max="2200" value="700">
+        </div>
+        <div>
+          <label for="fullness">Resonance</label>
+          <input type="range" id="fullness" min="0" max="100" value="55">
+        </div>
+        <div>
+          <label for="swing">Rubato / Timing</label>
+          <input type="range" id="swing" min="0" max="45" value="8">
+        </div>
+        <div>
+          <label for="detectSensitivity">Detection Sensitivity</label>
+          <input type="range" id="detectSensitivity" min="3" max="18" value="9">
+          <p class="hint">Higher = fewer, cleaner notes detected from audio.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>IV &nbsp; Layers &amp; Pedal</h2>
+      <div class="toggles">
+        <label class="toggle"><input type="checkbox" id="percussion" checked> Metronome pulse</label>
+        <label class="toggle"><input type="checkbox" id="bass" checked> Bass octave</label>
+        <label class="toggle"><input type="checkbox" id="ocean"> Hall reverb</label>
+        <label class="toggle"><input type="checkbox" id="harmony" checked> Inner harmony</label>
+        <label class="toggle"><input type="checkbox" id="humanize" checked> Expressive feel</label>
+        <label class="toggle"><input type="checkbox" id="loop"> Loop preview</label>
+      </div>
+    </section>
+  </section>
+
+  <!-- RIGHT COLUMN -->
+  <section class="stack">
+    <section class="card">
+      <h2>V &nbsp; Perform &amp; Export</h2>
+      <div class="visualizer" id="visualizer"></div>
+      <p class="status" id="status">Ready to perform.</p>
+      <div class="row">
+        <button class="primary" id="play">▶ &nbsp; Perform with Piano</button>
+        <button class="dark" id="stop">■ &nbsp; Stop</button>
+        <button class="green" id="exportWav">Export WAV</button>
+      </div>
+      <p class="hint">WAV export renders your full performance — articulation, dynamics, and all layers — directly in the browser.</p>
+    </section>
+
+    <section class="card">
+      <h2>Project Archive</h2>
+      <div class="row">
+        <button id="saveProject">Save Score</button>
+        <button id="loadProject">Load Score</button>
+        <button id="copyShare">Copy Share Text</button>
+      </div>
+      <p class="hint">Saves to browser storage. Share text copies the melody and settings to your clipboard.</p>
+    </section>
+
+    <section class="card">
+      <h2>Score Editor</h2>
+      <p class="small">Click a note chip to remove it. Use the keys above to add notes to the score.</p>
+      <div class="notes-grid" id="chips"></div>
+    </section>
+  </section>
+</main>
+
+<footer>Rights reminder: use melodies you composed, own, or have licensed. Audio import is intended for personal compositions and permitted personal-use arrangements.</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+// ─── Note tables ──────────────────────────────────────────────────────────────
+const noteMap={C:0,"C#":1,DB:1,D:2,"D#":3,EB:3,E:4,F:5,"F#":6,GB:6,G:7,"G#":8,AB:8,A:9,"A#":10,BB:10,B:11};
+const midiNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+
+// ─── Classical style presets ──────────────────────────────────────────────────
+const presets={
+  baroque: {tempo:108,brightness:950,fullness:42,swing:6,noteLength:75, percussion:true, bass:true, ocean:false,harmony:true},
+  romantic:{tempo:80, brightness:650,fullness:68,swing:18,noteLength:125,percussion:false,bass:true, ocean:false,harmony:true},
+  nocturne:{tempo:58, brightness:420,fullness:60,swing:22,noteLength:138,percussion:false,bass:true, ocean:true, harmony:true},
+  sonata:  {tempo:132,brightness:900,fullness:50,swing:10,noteLength:82, percussion:true, bass:true, ocean:false,harmony:true},
+  waltz:   {tempo:116,brightness:700,fullness:44,swing:28,noteLength:90, percussion:true, bass:true, ocean:false,harmony:true},
+  etude:   {tempo:168,brightness:1400,fullness:36,swing:8, noteLength:58, percussion:true, bass:false,ocean:false,harmony:false},
+};
+
+let audioCtx,timers=[],loopTimer=null;
+
+// ─── Piano key pad ─────────────────────────────────────────────────────────────
+const padNotes=["C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5"];
+padNotes.forEach(n=>{
+  const b=document.createElement("button");
+  b.textContent=n;
+  b.onclick=async()=>{addNote(n);await previewSingle(n)};
+  $('pad').appendChild(b);
+});
+
+// ─── Visualizer bars ───────────────────────────────────────────────────────────
+for(let i=0;i<38;i++){
+  const bar=document.createElement('div');
+  bar.className='bar';
+  bar.style.height=(18+Math.random()*72)+'%';
+  bar.style.animationDelay=(Math.random()*2)+'s';
+  $('visualizer').appendChild(bar);
+}
+
+// ─── Note helpers ──────────────────────────────────────────────────────────────
+function normalizeNotesText(t){
+  return t.replace(/[,
+\r\t]+/g,' ').replace(/[^A-Ga-g0-9#bB\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function getNotes(){return normalizeNotesText($('notes').value).split(/\s+/).filter(Boolean)}
+function setNotes(n){$('notes').value=n.join(' ');renderChips()}
+function addNote(n){const a=getNotes();a.push(n);setNotes(a)}
+function noteToFreq(note){
+  const m=note.trim().toUpperCase().match(/^([A-G])(#|B)?(\d)$/);
+  if(!m)return null;
+  const name=m[1]+(m[2]||''),oct=parseInt(m[3],10),semi=noteMap[name];
+  if(semi===undefined)return null;
+  const midi=(oct+1)*12+semi;
+  return 440*Math.pow(2,(midi-69)/12);
+}
+function freqToNote(f){
+  const midi=Math.round(69+12*Math.log2(f/440));
+  if(midi<36||midi>96)return null;
+  return midiNames[((midi%12)+12)%12]+(Math.floor(midi/12)-1);
+}
+
+// ─── Chips ─────────────────────────────────────────────────────────────────────
+function renderChips(){
+  const c=$('chips');c.innerHTML='';
+  getNotes().forEach((n,i)=>{
+    const d=document.createElement('div');d.className='note-chip';
+    d.innerHTML=n+'<small>remove</small>';
+    d.onclick=()=>{const a=getNotes();a.splice(i,1);setNotes(a)};
+    c.appendChild(d);
+  });
+}
+$('notes').oninput=renderChips;
+
+// ─── Labels ────────────────────────────────────────────────────────────────────
+function updateLabels(){
+  $('tempoVal').textContent=$('tempo').value+' BPM';
+  const v=+$('noteLength').value;
+  let lab='Legato';
+  if(v<55)lab='Staccato';
+  else if(v<90)lab='Portato';
+  $('noteLengthVal').textContent=lab+' ('+v+'%)';
+}
+['tempo','noteLength'].forEach(id=>$(id).oninput=updateLabels);
+updateLabels();
+
+// ─── Preset buttons ────────────────────────────────────────────────────────────
+document.querySelectorAll('.preset').forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const p=presets[btn.dataset.preset];
+  ['tempo','brightness','fullness','swing','noteLength'].forEach(k=>$(k).value=p[k]);
+  ['percussion','bass','ocean','harmony'].forEach(k=>$(k).checked=p[k]);
+  updateLabels();
+});
+
+function getSettings(){
+  return{
+    tempo:+$('tempo').value,brightness:+$('brightness').value,
+    fullness:+$('fullness').value/100,swing:+$('swing').value/100,
+    noteLength:+$('noteLength').value/100,
+    percussion:$('percussion').checked,bass:$('bass').checked,
+    ocean:$('ocean').checked,harmony:$('harmony').checked,
+    humanize:$('humanize').checked
+  };
+}
+
+// ─── Piano tone synthesis ──────────────────────────────────────────────────────
+// Realistic piano uses: detuned unison strings, hammer attack, inharmonic partials
+function pianoPan(ctx,dest,freq,time,dur,vel=0.8,s=getSettings()){
+  const gain=ctx.createGain();
+  gain.gain.setValueAtTime(0.0001,time);
+  gain.gain.exponentialRampToValueAtTime(Math.max(0.001,0.28*vel),time+0.008); // sharp attack
+  gain.gain.exponentialRampToValueAtTime(Math.max(0.001,0.18*vel),time+0.05);
+  gain.gain.exponentialRampToValueAtTime(0.0001,time+Math.max(0.12,dur));
+
+  const filt=ctx.createBiquadFilter();
+  filt.type='lowpass';
+  filt.frequency.value=s.brightness;
+  filt.Q.value=0.6;
+
+  // Piano inharmonic partials: 1, 2.001, 3.003, 4.006, 5.012 (slight inharmonicity)
+  const partialMults=[1,2.001,3.003,4.006,5.012,6.02];
+  const partialGains=[1,0.55,0.28,0.12,0.055,0.022];
+  // 3 slightly detuned "strings" per note (unison chorus)
+  const detuneAmounts=[0,-0.5,0.5]; // cents
+
+  partialMults.forEach((mult,pi)=>{
+    detuneAmounts.forEach(detuneCents=>{
+      const osc=ctx.createOscillator(),pg=ctx.createGain();
+      osc.type=pi===0?'sine':'triangle';
+      const detuneRatio=Math.pow(2,detuneCents/1200);
+      osc.frequency.setValueAtTime(freq*mult*detuneRatio,time);
+      osc.frequency.exponentialRampToValueAtTime(freq*mult*detuneRatio*0.9998,time+dur);
+      const gVal=partialGains[pi]*(pi===0?1:(s.fullness*0.7+0.3))*(pi===0?1:0.55);
+      pg.gain.value=Math.max(0.0001,gVal);
+      osc.connect(pg).connect(filt);
+      osc.start(time);osc.stop(time+dur+0.08);
+    });
+  });
+
+  // Soft hammer attack noise
+  if(ctx.sampleRate){
+    const atkLen=Math.floor(ctx.sampleRate*0.015);
+    const buf=ctx.createBuffer(1,atkLen,ctx.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<atkLen;i++)d[i]=(Math.random()*2-1)*Math.max(0,(1-i/atkLen));
+    const ns=ctx.createBufferSource(),ng=ctx.createGain(),nf=ctx.createBiquadFilter();
+    ns.buffer=buf;nf.type='bandpass';nf.frequency.value=freq*2;nf.Q.value=3;
+    ng.gain.value=0.035*vel;
+    ns.connect(nf).connect(ng).connect(dest);
+    ns.start(time);
+  }
+
+  filt.connect(gain).connect(dest);
+}
+
+// Hall reverb via convolution-like delay network
+function addReverb(ctx,dest,time,dur){
+  const len=Math.max(1,Math.floor(ctx.sampleRate*Math.min(dur+2,4)));
+  const buf=ctx.createBuffer(1,len,ctx.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,1.8)*0.04;
+  const src=ctx.createBufferSource(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+  src.buffer=buf;f.type='lowpass';f.frequency.value=3200;g.gain.value=0.18;
+  src.connect(f).connect(g).connect(dest);src.start(time);
+}
+
+function metronomeClick(ctx,dest,time,strong=false){
+  const osc=ctx.createOscillator(),g=ctx.createGain();
+  osc.type='sine';osc.frequency.value=strong?1200:880;
+  g.gain.setValueAtTime(strong?0.06:0.03,time);
+  g.gain.exponentialRampToValueAtTime(0.0001,time+0.04);
+  osc.connect(g).connect(dest);osc.start(time);osc.stop(time+0.05);
+}
+
+function scheduleSong(ctx,dest,start,notes,s){
+  const beat=60/s.tempo,dur=beat*s.noteLength;
+  const total=notes.length*beat+dur+1.0;
+  if(s.ocean)addReverb(ctx,dest,start,total);
+  notes.forEach((note,i)=>{
+    const f=note;
+    const t=start+i*beat+(i%2?beat*s.swing:0)+(s.humanize?(Math.random()*0.022-0.011):0);
+    const vel=s.humanize?0.66+Math.random()*0.28:0.84;
+    const dynamics=s.humanize?vel*(0.85+0.3*Math.sin(i*0.4+(Math.random()*0.2))):vel;
+    pianoPan(ctx,dest,f,t,dur,dynamics,s);
+    if(s.harmony&&s.fullness>0.15){
+      // Add a 3rd or 5th for inner harmony
+      const harmFreq=f*(Math.random()>0.5?1.25:1.5);
+      pianoPan(ctx,dest,harmFreq,t+0.018,dur*0.82,0.2*s.fullness,s);
+    }
+    if(s.bass&&i%2===0){
+      // Bass note: 2 octaves below, softer
+      pianoPan(ctx,dest,f/4,t,dur*1.12,0.22,s);
+    }
+    if(s.percussion){
+      metronomeClick(ctx,dest,t,i%4===0);
+    }
+  });
+  return total;
+}
+
+// ─── Audio engine ──────────────────────────────────────────────────────────────
+async function ensureAudio(){
+  audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')await audioCtx.resume();
+  return audioCtx;
+}
+async function previewSingle(n){
+  const f=noteToFreq(n);if(!f)return;
+  const ctx=await ensureAudio(),s=getSettings();
+  pianoPan(ctx,ctx.destination,f,ctx.currentTime+0.02,0.65*s.noteLength,0.8,s);
+}
+function stopAll(){
+  timers.forEach(clearTimeout);timers=[];
+  if(loopTimer)clearTimeout(loopTimer);loopTimer=null;
+  $('visualizer').classList.remove('playing');
+  $('status').textContent='Performance stopped.';
+}
+async function playSong(){
+  stopAll();
+  const valid=getNotes().map(n=>({n,f:noteToFreq(n)})).filter(x=>x.f);
+  if(!valid.length){$('status').textContent='Enter notes like C4 E4 G4 B4 first.';return}
+  const ctx=await ensureAudio(),s=getSettings();
+  const freqs=valid.map(x=>x.f);
+  const total=scheduleSong(ctx,ctx.destination,ctx.currentTime+0.15,freqs,s);
+  $('visualizer').classList.add('playing');
+  $('status').textContent='Performing your classical arrangement…';
+  timers.push(setTimeout(()=>{
+    $('visualizer').classList.remove('playing');
+    $('status').textContent='Bravo. Ready to refine, export, or replay.';
+    if($('loop').checked)loopTimer=setTimeout(playSong,300);
+  },total*1000));
+}
+$('play').onclick=playSong;$('stop').onclick=stopAll;
+
+// ─── Generate classical melody ─────────────────────────────────────────────────
+$('generate').onclick=()=>{
+  // Classical scales: natural minor, major, harmonic minor, dorian
+  const scales=[
+    ["E4","F#4","G4","A4","B4","C5","D5","E5"],   // E natural minor
+    ["C4","D4","E4","F4","G4","A4","B4","C5"],    // C major
+    ["A3","B3","C4","D4","E4","F4","G#4","A4"],   // A harmonic minor
+    ["D4","E4","F4","G4","A4","B4","C5","D5"],    // D dorian
+    ["G4","A4","Bb4","C5","D5","Eb5","F#5","G5"], // G hungarian minor
+  ];
+  const scale=scales[Math.floor(Math.random()*scales.length)];
+  const len=14+Math.floor(Math.random()*8);
+  const mel=[];
+  let idx=Math.floor(scale.length/2);
+  for(let i=0;i<len;i++){
+    const step=Math.random()<0.6?Math.floor(Math.random()*3)-1:Math.floor(Math.random()*5)-2;
+    idx=Math.max(0,Math.min(scale.length-1,idx+step));
+    mel.push(scale[idx]);
+  }
+  mel.push(scale[0]);
+  setNotes(mel);
+  $('status').textContent='Classical melody generated.';
+};
+$('clear').onclick=()=>setNotes([]);
+
+// ─── Project save / load / share ───────────────────────────────────────────────
+$('saveProject').onclick=()=>{
+  const data={notes:getNotes(),settings:{tempo:$('tempo').value,brightness:$('brightness').value,fullness:$('fullness').value,swing:$('swing').value,noteLength:$('noteLength').value,detectSensitivity:$('detectSensitivity').value,percussion:$('percussion').checked,bass:$('bass').checked,ocean:$('ocean').checked,harmony:$('harmony').checked,humanize:$('humanize').checked}};
+  localStorage.setItem('classicalPianoProject',JSON.stringify(data));
+  $('status').textContent='Score saved to browser storage.';
+};
+$('loadProject').onclick=()=>{
+  const raw=localStorage.getItem('classicalPianoProject');
+  if(!raw){$('status').textContent='No saved score found in this browser.';return}
+  const data=JSON.parse(raw),s=data.settings||{};
+  setNotes(data.notes||[]);
+  ['tempo','brightness','fullness','swing','noteLength','detectSensitivity'].forEach(k=>{if(s[k]!==undefined)$(k).value=s[k]});
+  ['percussion','bass','ocean','harmony','humanize'].forEach(k=>{if(s[k]!==undefined)$(k).checked=s[k]});
+  updateLabels();$('status').textContent='Score loaded.';
+};
+$('copyShare').onclick=async()=>{
+  const art=$('noteLengthVal').textContent;
+  const text=`Classical Piano Remixer — Melody: ${getNotes().join(' ')} | Tempo: ${$('tempo').value} BPM | Articulation: ${art}`;
+  try{await navigator.clipboard.writeText(text);$('status').textContent='Share text copied to clipboard.'}
+  catch{$('status').textContent=text}
+};
+
+// ─── WAV export ────────────────────────────────────────────────────────────────
+function audioBufferToWav(buffer){
+  const nc=buffer.numberOfChannels,sr=buffer.sampleRate,len=buffer.length*nc*2+44,ab=new ArrayBuffer(len),v=new DataView(ab);
+  function ws(o,s){for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}
+  let o=0;ws(o,'RIFF');o+=4;v.setUint32(o,len-8,true);o+=4;ws(o,'WAVE');o+=4;ws(o,'fmt ');o+=4;v.setUint32(o,16,true);o+=4;v.setUint16(o,1,true);o+=2;v.setUint16(o,nc,true);o+=2;v.setUint32(o,sr,true);o+=4;v.setUint32(o,sr*nc*2,true);o+=4;v.setUint16(o,nc*2,true);o+=2;v.setUint16(o,16,true);o+=2;ws(o,'data');o+=4;v.setUint32(o,len-o-4,true);o+=4;
+  for(let i=0;i<buffer.length;i++){for(let ch=0;ch<nc;ch++){const sample=Math.max(-1,Math.min(1,buffer.getChannelData(ch)[i]));v.setInt16(o,sample<0?sample*0x8000:sample*0x7FFF,true);o+=2}}
+  return new Blob([ab],{type:'audio/wav'});
+}
+$('exportWav').onclick=async()=>{
+  const notes=getNotes().filter(n=>noteToFreq(n));
+  if(!notes.length){$('status').textContent='Add valid notes before exporting.';return}
+  $('status').textContent='Rendering WAV…';
+  const s=getSettings(),beat=60/s.tempo,duration=notes.length*beat+beat*s.noteLength+1.5,sr=44100;
+  const off=new OfflineAudioContext(2,Math.ceil(duration*sr),sr);
+  const freqs=notes.map(noteToFreq).filter(Boolean);
+  scheduleSong(off,off.destination,0.1,freqs,s);
+  const rendered=await off.startRendering(),blob=audioBufferToWav(rendered);
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='classical-piano-arrangement.wav';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  $('status').textContent='WAV exported successfully.';
+};
+
+// ─── Audio pitch detection ─────────────────────────────────────────────────────
+function autoCorrelate(buffer,sr){
+  let size=buffer.length,rms=0;
+  for(let i=0;i<size;i++)rms+=buffer[i]*buffer[i];
+  rms=Math.sqrt(rms/size);if(rms<0.012)return null;
+  let c=new Array(size).fill(0);
+  for(let i=0;i<size;i++)for(let j=0;j<size-i;j++)c[i]+=buffer[j]*buffer[j+i];
+  let d=0;while(c[d]>c[d+1])d++;
+  let max=-1,pos=-1;
+  for(let i=d;i<size;i++)if(c[i]>max){max=c[i];pos=i}
+  if(pos<=0)return null;
+  let T0=pos,x1=c[T0-1],x2=c[T0],x3=c[T0+1];
+  const a=(x1+x3-2*x2)/2,b=(x3-x1)/2;
+  if(a)T0=T0-b/(2*a);
+  const f=sr/T0;
+  return f>=65&&f<=1500?f:null;
+}
+async function detectMelodyFromAudioFile(file){
+  $('status').textContent='Decoding audio…';$('progress').style.width='10%';
+  const ab=await file.arrayBuffer();
+  const ctx=new(window.AudioContext||window.webkitAudioContext)();
+  const buf=await ctx.decodeAudioData(ab);await ctx.close();
+  const sr=buf.sampleRate,ch=buf.getChannelData(0),win=2048,hop=1024;
+  const minRun=Math.max(2,+$('detectSensitivity').value);
+  const maxFrames=Math.min(Math.floor((ch.length-win)/hop),2400);
+  let det=[],last=null,run=0;
+  $('status').textContent='Transcribing melody…';
+  for(let frame=0;frame<maxFrames;frame++){
+    const start=frame*hop,slice=ch.slice(start,start+win);
+    const freq=autoCorrelate(slice,sr),note=freq?freqToNote(freq):null;
+    if(note&&note===last)run++;
+    else{if(last&&run>=minRun)det.push(last);last=note;run=note?1:0}
+    if(frame%50===0){$('progress').style.width=10+Math.round(frame/maxFrames*85)+'%';await new Promise(r=>setTimeout(r,0))}
+  }
+  if(last&&run>=minRun)det.push(last);
+  const simple=[];for(const n of det)if(simple[simple.length-1]!==n)simple.push(n);
+  $('progress').style.width='100%';setTimeout(()=>$('progress').style.width='0%',900);
+  const capped=simple.slice(0,96);
+  if(!capped.length){$('status').textContent='No clear pitch found. Try a solo piano, vocal hum, or single-instrument recording.';return}
+  setNotes(capped);
+  $('status').textContent=`Transcribed ${capped.length} notes. Review and refine below.`;
+}
+async function handleFile(file){
+  if(!file)return;
+  const name=file.name.toLowerCase();
+  if(file.type.startsWith('audio/')||name.endsWith('.mp3')||name.endsWith('.wav')||name.endsWith('.m4a')){
+    try{await detectMelodyFromAudioFile(file)}
+    catch(e){console.error(e);$('status').textContent='Could not decode audio. Try MP3, WAV, or M4A.';$('progress').style.width='0%'}
+    return;
+  }
+  const text=await file.text();
+  setNotes(normalizeNotesText(text).split(/\s+/).filter(Boolean));
+  $('status').textContent='Score text imported.';
+}
+$('chooseFile').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>handleFile(e.target.files[0]);
+['dragenter','dragover'].forEach(evt=>$('drop').addEventListener(evt,e=>{e.preventDefault();$('drop').classList.add('drag')}));
+['dragleave','drop'].forEach(evt=>$('drop').addEventListener(evt,e=>{e.preventDefault();$('drop').classList.remove('drag')}));
+$('drop').addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
+
+renderChips();
+</script>
+</body>
+</html>
