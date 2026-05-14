@@ -6,6 +6,7 @@
 <title>Classical Piano Remixer - Compose & Arrange</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
+
 :root{
   --ivory:#F5F0E8;--parchment:#EDE4D0;--gold:#C9A84C;--gold-light:#E8C96B;--gold-dark:#A07830;
   --navy:#0D1B2A;--deep-navy:#071320;--burgundy:#6B1F2A;--crimson:#8B2635;
@@ -24,7 +25,6 @@ body{
     linear-gradient(160deg,#0D1B2A 0%,#12263A 40%,#1A1008 100%);
   overflow-x:hidden;
 }
-/* Ornate background texture */
 body::before{
   content:'';position:fixed;inset:0;
   background-image:
@@ -32,7 +32,6 @@ body::before{
     repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(201,168,76,.04) 80px);
   pointer-events:none;z-index:0;
 }
-/* Gold decorative top border */
 body::after{
   content:'';position:fixed;top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
@@ -66,7 +65,6 @@ h1{
   line-height:1.6;font-weight:300;opacity:.82;
   font-style:italic;color:var(--parchment);
 }
-/* Decorative rule */
 .rule{
   display:flex;align-items:center;gap:16px;
   margin:22px auto 0;max-width:500px;
@@ -215,7 +213,6 @@ button:hover::before{opacity:1}
   width:16px;height:16px;accent-color:var(--gold);cursor:pointer;
 }
 
-/* Piano visualizer */
 .visualizer{
   height:130px;display:flex;align-items:flex-end;gap:5px;
   padding:12px;border-radius:var(--radius);
@@ -251,7 +248,6 @@ button:hover::before{opacity:1}
   color:var(--gold-light);letter-spacing:.5px;font-style:italic;
 }
 
-/* Note chips */
 .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:9px;margin-top:12px}
 .note-chip{
   border-radius:3px;
@@ -264,7 +260,6 @@ button:hover::before{opacity:1}
 .note-chip:hover{border-color:var(--crimson);color:var(--crimson);background:rgba(107,31,42,.3)}
 .note-chip small{display:block;opacity:.45;font-weight:400;margin-top:3px;font-size:.72rem;letter-spacing:.5px;font-style:italic}
 
-/* Piano key pad */
 .pad{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
 .pad button{
   border-radius:2px;padding:18px 4px 14px;
@@ -290,7 +285,6 @@ button:hover::before{opacity:1}
   font-size:.8rem;font-weight:700;color:var(--gold-light);letter-spacing:.5px;
 }
 
-/* Milestones */
 .milestones{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
 .milestone{
   background:rgba(7,19,32,.6);
@@ -301,7 +295,6 @@ button:hover::before{opacity:1}
 }
 .done{color:var(--gold-light);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.35)}
 
-/* Drop zone */
 .drop{
   border:2px dashed rgba(201,168,76,.3);
   border-radius:var(--radius);padding:20px;
@@ -320,12 +313,8 @@ footer{
   text-align:center;opacity:.55;font-size:.82rem;line-height:1.6;
   font-style:italic;color:var(--parchment);
 }
-footer::before{
-  content:'— ';color:var(--gold);opacity:.6;
-}
-footer::after{
-  content:' —';color:var(--gold);opacity:.6;
-}
+footer::before{content:'— ';color:var(--gold);opacity:.6;}
+footer::after{content:' —';color:var(--gold);opacity:.6;}
 
 @media(max-width:900px){
   main{grid-template-columns:1fr}
@@ -338,6 +327,7 @@ footer::after{
 }
 </style>
 </head>
+
 <body>
 <header>
   <div class="eyebrow">🎹 Classical Piano Arranger &nbsp;·&nbsp; Compose &amp; Perform</div>
@@ -355,7 +345,6 @@ footer::after{
 </header>
 
 <main>
-  <!-- SECTION 1 -->
   <section class="card full">
     <h2>I &nbsp; Enter or Import a Score</h2>
     <div class="grid2">
@@ -380,7 +369,6 @@ footer::after{
     <div class="pad" id="pad"></div>
   </section>
 
-  <!-- LEFT COLUMN -->
   <section class="stack">
     <section class="card">
       <h2>II &nbsp; Select a Style</h2>
@@ -439,7 +427,6 @@ footer::after{
     </section>
   </section>
 
-  <!-- RIGHT COLUMN -->
   <section class="stack">
     <section class="card">
       <h2>V &nbsp; Perform &amp; Export</h2>
@@ -474,14 +461,14 @@ footer::after{
 <footer>Rights reminder: use melodies you composed, own, or have licensed. Audio import is intended for personal compositions and permitted personal-use arrangements.</footer>
 
 <script>
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-// ─── Note tables ──────────────────────────────────────────────────────────────
-const noteMap={C:0,"C#":1,DB:1,D:2,"D#":3,EB:3,E:4,F:5,"F#":6,GB:6,G:7,"G#":8,AB:8,A:9,"A#":10,BB:10,B:11};
-const midiNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+const noteMap = {
+  C:0,"C#":1,DB:1,D:2,"D#":3,EB:3,E:4,F:5,"F#":6,GB:6,G:7,"G#":8,AB:8,A:9,"A#":10,BB:10,B:11
+};
+const midiNames = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
-// ─── Classical style presets ──────────────────────────────────────────────────
-const presets={
+const presets = {
   baroque: {tempo:108,brightness:950,fullness:42,swing:6,noteLength:75, percussion:true, bass:true, ocean:false,harmony:true},
   romantic:{tempo:80, brightness:650,fullness:68,swing:18,noteLength:125,percussion:false,bass:true, ocean:false,harmony:true},
   nocturne:{tempo:58, brightness:420,fullness:60,swing:22,noteLength:138,percussion:false,bass:true, ocean:true, harmony:true},
@@ -490,136 +477,235 @@ const presets={
   etude:   {tempo:168,brightness:1400,fullness:36,swing:8, noteLength:58, percussion:true, bass:false,ocean:false,harmony:false},
 };
 
-let audioCtx,timers=[],loopTimer=null;
+let audioCtx = null;
+let timers = [];
+let loopTimer = null;
+let activeNodes = [];
 
-// ─── Piano key pad ─────────────────────────────────────────────────────────────
-const padNotes=["C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5"];
-padNotes.forEach(n=>{
-  const b=document.createElement("button");
-  b.textContent=n;
-  b.onclick=async()=>{addNote(n);await previewSingle(n)};
+// Piano key pad
+const padNotes = ["C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5"];
+
+padNotes.forEach(n => {
+  const b = document.createElement("button");
+  b.textContent = n;
+  b.onclick = async () => {
+    addNote(n);
+    await previewSingle(n);
+  };
   $('pad').appendChild(b);
 });
 
-// ─── Visualizer bars ───────────────────────────────────────────────────────────
-for(let i=0;i<38;i++){
-  const bar=document.createElement('div');
-  bar.className='bar';
-  bar.style.height=(18+Math.random()*72)+'%';
-  bar.style.animationDelay=(Math.random()*2)+'s';
+// Visualizer bars
+for(let i = 0; i < 38; i++){
+  const bar = document.createElement('div');
+  bar.className = 'bar';
+  bar.style.height = (18 + Math.random() * 72) + '%';
+  bar.style.animationDelay = (Math.random() * 2) + 's';
   $('visualizer').appendChild(bar);
 }
 
-// ─── Note helpers ──────────────────────────────────────────────────────────────
+// Note helpers
 function normalizeNotesText(t){
-  return t.replace(/[,
-\r\t]+/g,' ').replace(/[^A-Ga-g0-9#bB\s]/g,' ').replace(/\s+/g,' ').trim();
-}
-function getNotes(){return normalizeNotesText($('notes').value).split(/\s+/).filter(Boolean)}
-function setNotes(n){$('notes').value=n.join(' ');renderChips()}
-function addNote(n){const a=getNotes();a.push(n);setNotes(a)}
-function noteToFreq(note){
-  const m=note.trim().toUpperCase().match(/^([A-G])(#|B)?(\d)$/);
-  if(!m)return null;
-  const name=m[1]+(m[2]||''),oct=parseInt(m[3],10),semi=noteMap[name];
-  if(semi===undefined)return null;
-  const midi=(oct+1)*12+semi;
-  return 440*Math.pow(2,(midi-69)/12);
-}
-function freqToNote(f){
-  const midi=Math.round(69+12*Math.log2(f/440));
-  if(midi<36||midi>96)return null;
-  return midiNames[((midi%12)+12)%12]+(Math.floor(midi/12)-1);
+  return t
+    .replace(/[,\r\t]+/g,' ')
+    .replace(/[^A-Ga-g0-9#bB\s]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
 }
 
-// ─── Chips ─────────────────────────────────────────────────────────────────────
+function getNotes(){
+  return normalizeNotesText($('notes').value).split(/\s+/).filter(Boolean);
+}
+
+function setNotes(n){
+  $('notes').value = n.join(' ');
+  renderChips();
+}
+
+function addNote(n){
+  const a = getNotes();
+  a.push(n);
+  setNotes(a);
+}
+
+function noteToFreq(note){
+  const m = note.trim().match(/^([A-Ga-g])([#bB]?)(\d)$/);
+  if (!m) return null;
+
+  const letter = m[1].toUpperCase();
+  let accidental = m[2];
+
+  if (accidental === 'b') accidental = 'B';
+
+  const name = letter + accidental;
+  const oct = parseInt(m[3], 10);
+  const semi = noteMap[name];
+
+  if (semi === undefined) return null;
+
+  const midi = (oct + 1) * 12 + semi;
+  return 440 * Math.pow(2, (midi - 69) / 12);
+}
+
+function freqToNote(f){
+  const midi = Math.round(69 + 12 * Math.log2(f / 440));
+  if(midi < 36 || midi > 96) return null;
+  return midiNames[((midi % 12) + 12) % 12] + (Math.floor(midi / 12) - 1);
+}
+
+// Chips
 function renderChips(){
-  const c=$('chips');c.innerHTML='';
-  getNotes().forEach((n,i)=>{
-    const d=document.createElement('div');d.className='note-chip';
-    d.innerHTML=n+'<small>remove</small>';
-    d.onclick=()=>{const a=getNotes();a.splice(i,1);setNotes(a)};
+  const c = $('chips');
+  c.innerHTML = '';
+
+  getNotes().forEach((n,i) => {
+    const d = document.createElement('div');
+    const isValid = !!noteToFreq(n);
+
+    d.className = 'note-chip';
+    d.innerHTML = n + `<small>${isValid ? 'remove' : 'invalid'}</small>`;
+
+    if (!isValid) {
+      d.style.borderColor = 'rgba(139,38,53,.9)';
+      d.style.color = '#ff9aa8';
+    }
+
+    d.onclick = () => {
+      const a = getNotes();
+      a.splice(i,1);
+      setNotes(a);
+    };
+
     c.appendChild(d);
   });
 }
-$('notes').oninput=renderChips;
 
-// ─── Labels ────────────────────────────────────────────────────────────────────
+$('notes').oninput = renderChips;
+
+// Labels
 function updateLabels(){
-  $('tempoVal').textContent=$('tempo').value+' BPM';
-  const v=+$('noteLength').value;
-  let lab='Legato';
-  if(v<55)lab='Staccato';
-  else if(v<90)lab='Portato';
-  $('noteLengthVal').textContent=lab+' ('+v+'%)';
+  $('tempoVal').textContent = $('tempo').value + ' BPM';
+
+  const v = +$('noteLength').value;
+  let lab = 'Legato';
+
+  if(v < 55) lab = 'Staccato';
+  else if(v < 90) lab = 'Portato';
+
+  $('noteLengthVal').textContent = lab + ' (' + v + '%)';
 }
-['tempo','noteLength'].forEach(id=>$(id).oninput=updateLabels);
+
+['tempo','noteLength'].forEach(id => $(id).oninput = updateLabels);
 updateLabels();
 
-// ─── Preset buttons ────────────────────────────────────────────────────────────
-document.querySelectorAll('.preset').forEach(btn=>btn.onclick=()=>{
-  document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));
+// Preset buttons
+document.querySelectorAll('.preset').forEach(btn => btn.onclick = () => {
+  document.querySelectorAll('.preset').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const p=presets[btn.dataset.preset];
-  ['tempo','brightness','fullness','swing','noteLength'].forEach(k=>$(k).value=p[k]);
-  ['percussion','bass','ocean','harmony'].forEach(k=>$(k).checked=p[k]);
+
+  const p = presets[btn.dataset.preset];
+
+  ['tempo','brightness','fullness','swing','noteLength'].forEach(k => $(k).value = p[k]);
+  ['percussion','bass','ocean','harmony'].forEach(k => $(k).checked = p[k]);
+
   updateLabels();
 });
 
 function getSettings(){
-  return{
-    tempo:+$('tempo').value,brightness:+$('brightness').value,
-    fullness:+$('fullness').value/100,swing:+$('swing').value/100,
-    noteLength:+$('noteLength').value/100,
-    percussion:$('percussion').checked,bass:$('bass').checked,
-    ocean:$('ocean').checked,harmony:$('harmony').checked,
+  return {
+    tempo:+$('tempo').value,
+    brightness:+$('brightness').value,
+    fullness:+$('fullness').value / 100,
+    swing:+$('swing').value / 100,
+    noteLength:+$('noteLength').value / 100,
+    percussion:$('percussion').checked,
+    bass:$('bass').checked,
+    ocean:$('ocean').checked,
+    harmony:$('harmony').checked,
     humanize:$('humanize').checked
   };
 }
 
-// ─── Piano tone synthesis ──────────────────────────────────────────────────────
-// Realistic piano uses: detuned unison strings, hammer attack, inharmonic partials
-function pianoPan(ctx,dest,freq,time,dur,vel=0.8,s=getSettings()){
-  const gain=ctx.createGain();
-  gain.gain.setValueAtTime(0.0001,time);
-  gain.gain.exponentialRampToValueAtTime(Math.max(0.001,0.28*vel),time+0.008); // sharp attack
-  gain.gain.exponentialRampToValueAtTime(Math.max(0.001,0.18*vel),time+0.05);
-  gain.gain.exponentialRampToValueAtTime(0.0001,time+Math.max(0.12,dur));
+// Audio engine
+async function ensureAudio(){
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-  const filt=ctx.createBiquadFilter();
-  filt.type='lowpass';
-  filt.frequency.value=s.brightness;
-  filt.Q.value=0.6;
+  if (!AudioContextClass) {
+    throw new Error('This browser does not support Web Audio.');
+  }
 
-  // Piano inharmonic partials: 1, 2.001, 3.003, 4.006, 5.012 (slight inharmonicity)
-  const partialMults=[1,2.001,3.003,4.006,5.012,6.02];
-  const partialGains=[1,0.55,0.28,0.12,0.055,0.022];
-  // 3 slightly detuned "strings" per note (unison chorus)
-  const detuneAmounts=[0,-0.5,0.5]; // cents
+  if (!audioCtx || audioCtx.state === 'closed') {
+    audioCtx = new AudioContextClass();
+  }
 
-  partialMults.forEach((mult,pi)=>{
-    detuneAmounts.forEach(detuneCents=>{
-      const osc=ctx.createOscillator(),pg=ctx.createGain();
-      osc.type=pi===0?'sine':'triangle';
-      const detuneRatio=Math.pow(2,detuneCents/1200);
-      osc.frequency.setValueAtTime(freq*mult*detuneRatio,time);
-      osc.frequency.exponentialRampToValueAtTime(freq*mult*detuneRatio*0.9998,time+dur);
-      const gVal=partialGains[pi]*(pi===0?1:(s.fullness*0.7+0.3))*(pi===0?1:0.55);
-      pg.gain.value=Math.max(0.0001,gVal);
+  if (audioCtx.state === 'suspended') {
+    await audioCtx.resume();
+  }
+
+  return audioCtx;
+}
+
+// Piano tone synthesis
+function pianoPan(ctx, dest, freq, time, dur, vel = 0.8, s = getSettings()){
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.0001, time);
+  gain.gain.exponentialRampToValueAtTime(Math.max(0.001, 0.28 * vel), time + 0.008);
+  gain.gain.exponentialRampToValueAtTime(Math.max(0.001, 0.18 * vel), time + 0.05);
+  gain.gain.exponentialRampToValueAtTime(0.0001, time + Math.max(0.12, dur));
+
+  const filt = ctx.createBiquadFilter();
+  filt.type = 'lowpass';
+  filt.frequency.value = s.brightness;
+  filt.Q.value = 0.6;
+
+  const partialMults = [1,2.001,3.003,4.006,5.012,6.02];
+  const partialGains = [1,0.55,0.28,0.12,0.055,0.022];
+  const detuneAmounts = [0,-0.5,0.5];
+
+  partialMults.forEach((mult,pi) => {
+    detuneAmounts.forEach(detuneCents => {
+      const osc = ctx.createOscillator();
+      const pg = ctx.createGain();
+
+      activeNodes.push(osc);
+
+      osc.type = pi === 0 ? 'sine' : 'triangle';
+
+      const detuneRatio = Math.pow(2, detuneCents / 1200);
+      osc.frequency.setValueAtTime(freq * mult * detuneRatio, time);
+      osc.frequency.exponentialRampToValueAtTime(freq * mult * detuneRatio * 0.9998, time + dur);
+
+      const gVal = partialGains[pi] * (pi === 0 ? 1 : (s.fullness * 0.7 + 0.3)) * (pi === 0 ? 1 : 0.55);
+      pg.gain.value = Math.max(0.0001, gVal);
+
       osc.connect(pg).connect(filt);
-      osc.start(time);osc.stop(time+dur+0.08);
+      osc.start(time);
+      osc.stop(time + dur + 0.08);
     });
   });
 
   // Soft hammer attack noise
   if(ctx.sampleRate){
-    const atkLen=Math.floor(ctx.sampleRate*0.015);
-    const buf=ctx.createBuffer(1,atkLen,ctx.sampleRate);
-    const d=buf.getChannelData(0);
-    for(let i=0;i<atkLen;i++)d[i]=(Math.random()*2-1)*Math.max(0,(1-i/atkLen));
-    const ns=ctx.createBufferSource(),ng=ctx.createGain(),nf=ctx.createBiquadFilter();
-    ns.buffer=buf;nf.type='bandpass';nf.frequency.value=freq*2;nf.Q.value=3;
-    ng.gain.value=0.035*vel;
+    const atkLen = Math.floor(ctx.sampleRate * 0.015);
+    const buf = ctx.createBuffer(1, atkLen, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+
+    for(let i = 0; i < atkLen; i++) {
+      d[i] = (Math.random() * 2 - 1) * Math.max(0, (1 - i / atkLen));
+    }
+
+    const ns = ctx.createBufferSource();
+    const ng = ctx.createGain();
+    const nf = ctx.createBiquadFilter();
+
+    activeNodes.push(ns);
+
+    ns.buffer = buf;
+    nf.type = 'bandpass';
+    nf.frequency.value = freq * 2;
+    nf.Q.value = 3;
+    ng.gain.value = 0.035 * vel;
+
     ns.connect(nf).connect(ng).connect(dest);
     ns.start(time);
   }
@@ -627,215 +713,486 @@ function pianoPan(ctx,dest,freq,time,dur,vel=0.8,s=getSettings()){
   filt.connect(gain).connect(dest);
 }
 
-// Hall reverb via convolution-like delay network
-function addReverb(ctx,dest,time,dur){
-  const len=Math.max(1,Math.floor(ctx.sampleRate*Math.min(dur+2,4)));
-  const buf=ctx.createBuffer(1,len,ctx.sampleRate);
-  const d=buf.getChannelData(0);
-  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,1.8)*0.04;
-  const src=ctx.createBufferSource(),g=ctx.createGain(),f=ctx.createBiquadFilter();
-  src.buffer=buf;f.type='lowpass';f.frequency.value=3200;g.gain.value=0.18;
-  src.connect(f).connect(g).connect(dest);src.start(time);
+function addReverb(ctx, dest, time, dur){
+  const len = Math.max(1, Math.floor(ctx.sampleRate * Math.min(dur + 2, 4)));
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+
+  for(let i = 0; i < len; i++) {
+    d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 1.8) * 0.04;
+  }
+
+  const src = ctx.createBufferSource();
+  const g = ctx.createGain();
+  const f = ctx.createBiquadFilter();
+
+  activeNodes.push(src);
+
+  src.buffer = buf;
+  f.type = 'lowpass';
+  f.frequency.value = 3200;
+  g.gain.value = 0.18;
+
+  src.connect(f).connect(g).connect(dest);
+  src.start(time);
 }
 
-function metronomeClick(ctx,dest,time,strong=false){
-  const osc=ctx.createOscillator(),g=ctx.createGain();
-  osc.type='sine';osc.frequency.value=strong?1200:880;
-  g.gain.setValueAtTime(strong?0.06:0.03,time);
-  g.gain.exponentialRampToValueAtTime(0.0001,time+0.04);
-  osc.connect(g).connect(dest);osc.start(time);osc.stop(time+0.05);
+function metronomeClick(ctx, dest, time, strong = false){
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+
+  activeNodes.push(osc);
+
+  osc.type = 'sine';
+  osc.frequency.value = strong ? 1200 : 880;
+
+  g.gain.setValueAtTime(strong ? 0.06 : 0.03, time);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + 0.04);
+
+  osc.connect(g).connect(dest);
+  osc.start(time);
+  osc.stop(time + 0.05);
 }
 
-function scheduleSong(ctx,dest,start,notes,s){
-  const beat=60/s.tempo,dur=beat*s.noteLength;
-  const total=notes.length*beat+dur+1.0;
-  if(s.ocean)addReverb(ctx,dest,start,total);
-  notes.forEach((note,i)=>{
-    const f=note;
-    const t=start+i*beat+(i%2?beat*s.swing:0)+(s.humanize?(Math.random()*0.022-0.011):0);
-    const vel=s.humanize?0.66+Math.random()*0.28:0.84;
-    const dynamics=s.humanize?vel*(0.85+0.3*Math.sin(i*0.4+(Math.random()*0.2))):vel;
-    pianoPan(ctx,dest,f,t,dur,dynamics,s);
-    if(s.harmony&&s.fullness>0.15){
-      // Add a 3rd or 5th for inner harmony
-      const harmFreq=f*(Math.random()>0.5?1.25:1.5);
-      pianoPan(ctx,dest,harmFreq,t+0.018,dur*0.82,0.2*s.fullness,s);
+function scheduleSong(ctx, dest, start, notes, s){
+  const beat = 60 / s.tempo;
+  const dur = beat * s.noteLength;
+  const total = notes.length * beat + dur + 1.0;
+
+  if(s.ocean) addReverb(ctx, dest, start, total);
+
+  notes.forEach((note,i) => {
+    const f = note;
+    const t = start + i * beat + (i % 2 ? beat * s.swing : 0) + (s.humanize ? (Math.random() * 0.022 - 0.011) : 0);
+    const vel = s.humanize ? 0.66 + Math.random() * 0.28 : 0.84;
+    const dynamics = s.humanize ? vel * (0.85 + 0.3 * Math.sin(i * 0.4 + (Math.random() * 0.2))) : vel;
+
+    pianoPan(ctx, dest, f, t, dur, dynamics, s);
+
+    if(s.harmony && s.fullness > 0.15){
+      const harmFreq = f * (Math.random() > 0.5 ? 1.25 : 1.5);
+      pianoPan(ctx, dest, harmFreq, t + 0.018, dur * 0.82, 0.2 * s.fullness, s);
     }
-    if(s.bass&&i%2===0){
-      // Bass note: 2 octaves below, softer
-      pianoPan(ctx,dest,f/4,t,dur*1.12,0.22,s);
+
+    if(s.bass && i % 2 === 0){
+      pianoPan(ctx, dest, f / 4, t, dur * 1.12, 0.22, s);
     }
+
     if(s.percussion){
-      metronomeClick(ctx,dest,t,i%4===0);
+      metronomeClick(ctx, dest, t, i % 4 === 0);
     }
   });
+
   return total;
 }
 
-// ─── Audio engine ──────────────────────────────────────────────────────────────
-async function ensureAudio(){
-  audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==='suspended')await audioCtx.resume();
-  return audioCtx;
-}
 async function previewSingle(n){
-  const f=noteToFreq(n);if(!f)return;
-  const ctx=await ensureAudio(),s=getSettings();
-  pianoPan(ctx,ctx.destination,f,ctx.currentTime+0.02,0.65*s.noteLength,0.8,s);
-}
-function stopAll(){
-  timers.forEach(clearTimeout);timers=[];
-  if(loopTimer)clearTimeout(loopTimer);loopTimer=null;
-  $('visualizer').classList.remove('playing');
-  $('status').textContent='Performance stopped.';
-}
-async function playSong(){
-  stopAll();
-  const valid=getNotes().map(n=>({n,f:noteToFreq(n)})).filter(x=>x.f);
-  if(!valid.length){$('status').textContent='Enter notes like C4 E4 G4 B4 first.';return}
-  const ctx=await ensureAudio(),s=getSettings();
-  const freqs=valid.map(x=>x.f);
-  const total=scheduleSong(ctx,ctx.destination,ctx.currentTime+0.15,freqs,s);
-  $('visualizer').classList.add('playing');
-  $('status').textContent='Performing your classical arrangement…';
-  timers.push(setTimeout(()=>{
-    $('visualizer').classList.remove('playing');
-    $('status').textContent='Bravo. Ready to refine, export, or replay.';
-    if($('loop').checked)loopTimer=setTimeout(playSong,300);
-  },total*1000));
-}
-$('play').onclick=playSong;$('stop').onclick=stopAll;
+  const f = noteToFreq(n);
+  if(!f) return;
 
-// ─── Generate classical melody ─────────────────────────────────────────────────
-$('generate').onclick=()=>{
-  // Classical scales: natural minor, major, harmonic minor, dorian
-  const scales=[
-    ["E4","F#4","G4","A4","B4","C5","D5","E5"],   // E natural minor
-    ["C4","D4","E4","F4","G4","A4","B4","C5"],    // C major
-    ["A3","B3","C4","D4","E4","F4","G#4","A4"],   // A harmonic minor
-    ["D4","E4","F4","G4","A4","B4","C5","D5"],    // D dorian
-    ["G4","A4","Bb4","C5","D5","Eb5","F#5","G5"], // G hungarian minor
+  try {
+    const ctx = await ensureAudio();
+    const s = getSettings();
+    pianoPan(ctx, ctx.destination, f, ctx.currentTime + 0.02, 0.65 * s.noteLength, 0.8, s);
+  } catch(err) {
+    console.error(err);
+    $('status').textContent = 'Audio failed to start: ' + err.message;
+  }
+}
+
+function stopAll(){
+  timers.forEach(clearTimeout);
+  timers = [];
+
+  if(loopTimer) clearTimeout(loopTimer);
+  loopTimer = null;
+
+  activeNodes.forEach(node => {
+    try { node.stop(); } catch(e) {}
+    try { node.disconnect(); } catch(e) {}
+  });
+
+  activeNodes = [];
+
+  $('visualizer').classList.remove('playing');
+  $('status').textContent = 'Performance stopped.';
+}
+
+async function playSong(){
+  try {
+    stopAll();
+
+    const valid = getNotes()
+      .map(n => ({ n, f: noteToFreq(n) }))
+      .filter(x => x.f);
+
+    if(!valid.length){
+      $('status').textContent = 'Enter valid notes like C4 E4 G4 B4 first.';
+      return;
+    }
+
+    const ctx = await ensureAudio();
+
+    if(ctx.state !== 'running'){
+      $('status').textContent = 'Audio is blocked. Click the button again or check browser audio permissions.';
+      return;
+    }
+
+    const master = ctx.createGain();
+    master.gain.value = 0.85;
+    master.connect(ctx.destination);
+
+    const s = getSettings();
+    const freqs = valid.map(x => x.f);
+    const total = scheduleSong(ctx, master, ctx.currentTime + 0.15, freqs, s);
+
+    $('visualizer').classList.add('playing');
+    $('status').textContent = 'Performing your classical arrangement…';
+
+    timers.push(setTimeout(() => {
+      $('visualizer').classList.remove('playing');
+      $('status').textContent = 'Bravo. Ready to refine, export, or replay.';
+
+      try { master.disconnect(); } catch(e) {}
+
+      if($('loop').checked){
+        loopTimer = setTimeout(playSong, 300);
+      }
+    }, total * 1000));
+
+  } catch(err) {
+    console.error(err);
+    $('visualizer').classList.remove('playing');
+    $('status').textContent = 'Audio failed to start: ' + err.message;
+  }
+}
+
+$('play').addEventListener('click', playSong);
+$('stop').addEventListener('click', stopAll);
+
+// Generate classical melody
+$('generate').onclick = () => {
+  const scales = [
+    ["E4","F#4","G4","A4","B4","C5","D5","E5"],
+    ["C4","D4","E4","F4","G4","A4","B4","C5"],
+    ["A3","B3","C4","D4","E4","F4","G#4","A4"],
+    ["D4","E4","F4","G4","A4","B4","C5","D5"],
+    ["G4","A4","Bb4","C5","D5","Eb5","F#5","G5"],
   ];
-  const scale=scales[Math.floor(Math.random()*scales.length)];
-  const len=14+Math.floor(Math.random()*8);
-  const mel=[];
-  let idx=Math.floor(scale.length/2);
-  for(let i=0;i<len;i++){
-    const step=Math.random()<0.6?Math.floor(Math.random()*3)-1:Math.floor(Math.random()*5)-2;
-    idx=Math.max(0,Math.min(scale.length-1,idx+step));
+
+  const scale = scales[Math.floor(Math.random() * scales.length)];
+  const len = 14 + Math.floor(Math.random() * 8);
+  const mel = [];
+  let idx = Math.floor(scale.length / 2);
+
+  for(let i = 0; i < len; i++){
+    const step = Math.random() < 0.6 ? Math.floor(Math.random() * 3) - 1 : Math.floor(Math.random() * 5) - 2;
+    idx = Math.max(0, Math.min(scale.length - 1, idx + step));
     mel.push(scale[idx]);
   }
+
   mel.push(scale[0]);
   setNotes(mel);
-  $('status').textContent='Classical melody generated.';
-};
-$('clear').onclick=()=>setNotes([]);
-
-// ─── Project save / load / share ───────────────────────────────────────────────
-$('saveProject').onclick=()=>{
-  const data={notes:getNotes(),settings:{tempo:$('tempo').value,brightness:$('brightness').value,fullness:$('fullness').value,swing:$('swing').value,noteLength:$('noteLength').value,detectSensitivity:$('detectSensitivity').value,percussion:$('percussion').checked,bass:$('bass').checked,ocean:$('ocean').checked,harmony:$('harmony').checked,humanize:$('humanize').checked}};
-  localStorage.setItem('classicalPianoProject',JSON.stringify(data));
-  $('status').textContent='Score saved to browser storage.';
-};
-$('loadProject').onclick=()=>{
-  const raw=localStorage.getItem('classicalPianoProject');
-  if(!raw){$('status').textContent='No saved score found in this browser.';return}
-  const data=JSON.parse(raw),s=data.settings||{};
-  setNotes(data.notes||[]);
-  ['tempo','brightness','fullness','swing','noteLength','detectSensitivity'].forEach(k=>{if(s[k]!==undefined)$(k).value=s[k]});
-  ['percussion','bass','ocean','harmony','humanize'].forEach(k=>{if(s[k]!==undefined)$(k).checked=s[k]});
-  updateLabels();$('status').textContent='Score loaded.';
-};
-$('copyShare').onclick=async()=>{
-  const art=$('noteLengthVal').textContent;
-  const text=`Classical Piano Remixer — Melody: ${getNotes().join(' ')} | Tempo: ${$('tempo').value} BPM | Articulation: ${art}`;
-  try{await navigator.clipboard.writeText(text);$('status').textContent='Share text copied to clipboard.'}
-  catch{$('status').textContent=text}
+  $('status').textContent = 'Classical melody generated.';
 };
 
-// ─── WAV export ────────────────────────────────────────────────────────────────
-function audioBufferToWav(buffer){
-  const nc=buffer.numberOfChannels,sr=buffer.sampleRate,len=buffer.length*nc*2+44,ab=new ArrayBuffer(len),v=new DataView(ab);
-  function ws(o,s){for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}
-  let o=0;ws(o,'RIFF');o+=4;v.setUint32(o,len-8,true);o+=4;ws(o,'WAVE');o+=4;ws(o,'fmt ');o+=4;v.setUint32(o,16,true);o+=4;v.setUint16(o,1,true);o+=2;v.setUint16(o,nc,true);o+=2;v.setUint32(o,sr,true);o+=4;v.setUint32(o,sr*nc*2,true);o+=4;v.setUint16(o,nc*2,true);o+=2;v.setUint16(o,16,true);o+=2;ws(o,'data');o+=4;v.setUint32(o,len-o-4,true);o+=4;
-  for(let i=0;i<buffer.length;i++){for(let ch=0;ch<nc;ch++){const sample=Math.max(-1,Math.min(1,buffer.getChannelData(ch)[i]));v.setInt16(o,sample<0?sample*0x8000:sample*0x7FFF,true);o+=2}}
-  return new Blob([ab],{type:'audio/wav'});
-}
-$('exportWav').onclick=async()=>{
-  const notes=getNotes().filter(n=>noteToFreq(n));
-  if(!notes.length){$('status').textContent='Add valid notes before exporting.';return}
-  $('status').textContent='Rendering WAV…';
-  const s=getSettings(),beat=60/s.tempo,duration=notes.length*beat+beat*s.noteLength+1.5,sr=44100;
-  const off=new OfflineAudioContext(2,Math.ceil(duration*sr),sr);
-  const freqs=notes.map(noteToFreq).filter(Boolean);
-  scheduleSong(off,off.destination,0.1,freqs,s);
-  const rendered=await off.startRendering(),blob=audioBufferToWav(rendered);
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='classical-piano-arrangement.wav';
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-  $('status').textContent='WAV exported successfully.';
+$('clear').onclick = () => setNotes([]);
+
+// Project save / load / share
+$('saveProject').onclick = () => {
+  const data = {
+    notes:getNotes(),
+    settings:{
+      tempo:$('tempo').value,
+      brightness:$('brightness').value,
+      fullness:$('fullness').value,
+      swing:$('swing').value,
+      noteLength:$('noteLength').value,
+      detectSensitivity:$('detectSensitivity').value,
+      percussion:$('percussion').checked,
+      bass:$('bass').checked,
+      ocean:$('ocean').checked,
+      harmony:$('harmony').checked,
+      humanize:$('humanize').checked
+    }
+  };
+
+  localStorage.setItem('classicalPianoProject', JSON.stringify(data));
+  $('status').textContent = 'Score saved to browser storage.';
 };
 
-// ─── Audio pitch detection ─────────────────────────────────────────────────────
-function autoCorrelate(buffer,sr){
-  let size=buffer.length,rms=0;
-  for(let i=0;i<size;i++)rms+=buffer[i]*buffer[i];
-  rms=Math.sqrt(rms/size);if(rms<0.012)return null;
-  let c=new Array(size).fill(0);
-  for(let i=0;i<size;i++)for(let j=0;j<size-i;j++)c[i]+=buffer[j]*buffer[j+i];
-  let d=0;while(c[d]>c[d+1])d++;
-  let max=-1,pos=-1;
-  for(let i=d;i<size;i++)if(c[i]>max){max=c[i];pos=i}
-  if(pos<=0)return null;
-  let T0=pos,x1=c[T0-1],x2=c[T0],x3=c[T0+1];
-  const a=(x1+x3-2*x2)/2,b=(x3-x1)/2;
-  if(a)T0=T0-b/(2*a);
-  const f=sr/T0;
-  return f>=65&&f<=1500?f:null;
-}
-async function detectMelodyFromAudioFile(file){
-  $('status').textContent='Decoding audio…';$('progress').style.width='10%';
-  const ab=await file.arrayBuffer();
-  const ctx=new(window.AudioContext||window.webkitAudioContext)();
-  const buf=await ctx.decodeAudioData(ab);await ctx.close();
-  const sr=buf.sampleRate,ch=buf.getChannelData(0),win=2048,hop=1024;
-  const minRun=Math.max(2,+$('detectSensitivity').value);
-  const maxFrames=Math.min(Math.floor((ch.length-win)/hop),2400);
-  let det=[],last=null,run=0;
-  $('status').textContent='Transcribing melody…';
-  for(let frame=0;frame<maxFrames;frame++){
-    const start=frame*hop,slice=ch.slice(start,start+win);
-    const freq=autoCorrelate(slice,sr),note=freq?freqToNote(freq):null;
-    if(note&&note===last)run++;
-    else{if(last&&run>=minRun)det.push(last);last=note;run=note?1:0}
-    if(frame%50===0){$('progress').style.width=10+Math.round(frame/maxFrames*85)+'%';await new Promise(r=>setTimeout(r,0))}
-  }
-  if(last&&run>=minRun)det.push(last);
-  const simple=[];for(const n of det)if(simple[simple.length-1]!==n)simple.push(n);
-  $('progress').style.width='100%';setTimeout(()=>$('progress').style.width='0%',900);
-  const capped=simple.slice(0,96);
-  if(!capped.length){$('status').textContent='No clear pitch found. Try a solo piano, vocal hum, or single-instrument recording.';return}
-  setNotes(capped);
-  $('status').textContent=`Transcribed ${capped.length} notes. Review and refine below.`;
-}
-async function handleFile(file){
-  if(!file)return;
-  const name=file.name.toLowerCase();
-  if(file.type.startsWith('audio/')||name.endsWith('.mp3')||name.endsWith('.wav')||name.endsWith('.m4a')){
-    try{await detectMelodyFromAudioFile(file)}
-    catch(e){console.error(e);$('status').textContent='Could not decode audio. Try MP3, WAV, or M4A.';$('progress').style.width='0%'}
+$('loadProject').onclick = () => {
+  const raw = localStorage.getItem('classicalPianoProject');
+
+  if(!raw){
+    $('status').textContent = 'No saved score found in this browser.';
     return;
   }
-  const text=await file.text();
-  setNotes(normalizeNotesText(text).split(/\s+/).filter(Boolean));
-  $('status').textContent='Score text imported.';
+
+  const data = JSON.parse(raw);
+  const s = data.settings || {};
+
+  setNotes(data.notes || []);
+
+  ['tempo','brightness','fullness','swing','noteLength','detectSensitivity'].forEach(k => {
+    if(s[k] !== undefined) $(k).value = s[k];
+  });
+
+  ['percussion','bass','ocean','harmony','humanize'].forEach(k => {
+    if(s[k] !== undefined) $(k).checked = s[k];
+  });
+
+  updateLabels();
+  $('status').textContent = 'Score loaded.';
+};
+
+$('copyShare').onclick = async () => {
+  const art = $('noteLengthVal').textContent;
+  const text = `Classical Piano Remixer — Melody: ${getNotes().join(' ')} | Tempo: ${$('tempo').value} BPM | Articulation: ${art}`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    $('status').textContent = 'Share text copied to clipboard.';
+  } catch {
+    $('status').textContent = text;
+  }
+};
+
+// WAV export
+function audioBufferToWav(buffer){
+  const nc = buffer.numberOfChannels;
+  const sr = buffer.sampleRate;
+  const len = buffer.length * nc * 2 + 44;
+  const ab = new ArrayBuffer(len);
+  const v = new DataView(ab);
+
+  function ws(o,s){
+    for(let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i));
+  }
+
+  let o = 0;
+
+  ws(o,'RIFF'); o += 4;
+  v.setUint32(o, len - 8, true); o += 4;
+  ws(o,'WAVE'); o += 4;
+  ws(o,'fmt '); o += 4;
+  v.setUint32(o, 16, true); o += 4;
+  v.setUint16(o, 1, true); o += 2;
+  v.setUint16(o, nc, true); o += 2;
+  v.setUint32(o, sr, true); o += 4;
+  v.setUint32(o, sr * nc * 2, true); o += 4;
+  v.setUint16(o, nc * 2, true); o += 2;
+  v.setUint16(o, 16, true); o += 2;
+  ws(o,'data'); o += 4;
+  v.setUint32(o, len - o - 4, true); o += 4;
+
+  for(let i = 0; i < buffer.length; i++){
+    for(let ch = 0; ch < nc; ch++){
+      const sample = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+      v.setInt16(o, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+      o += 2;
+    }
+  }
+
+  return new Blob([ab], {type:'audio/wav'});
 }
-$('chooseFile').onclick=()=>$('fileInput').click();
-$('fileInput').onchange=e=>handleFile(e.target.files[0]);
-['dragenter','dragover'].forEach(evt=>$('drop').addEventListener(evt,e=>{e.preventDefault();$('drop').classList.add('drag')}));
-['dragleave','drop'].forEach(evt=>$('drop').addEventListener(evt,e=>{e.preventDefault();$('drop').classList.remove('drag')}));
-$('drop').addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
+
+$('exportWav').onclick = async () => {
+  const notes = getNotes().filter(n => noteToFreq(n));
+
+  if(!notes.length){
+    $('status').textContent = 'Add valid notes before exporting.';
+    return;
+  }
+
+  try {
+    $('status').textContent = 'Rendering WAV…';
+
+    const s = getSettings();
+    const beat = 60 / s.tempo;
+    const duration = notes.length * beat + beat * s.noteLength + 1.5;
+    const sr = 44100;
+
+    const off = new OfflineAudioContext(2, Math.ceil(duration * sr), sr);
+    const freqs = notes.map(noteToFreq).filter(Boolean);
+
+    scheduleSong(off, off.destination, 0.1, freqs, s);
+
+    const rendered = await off.startRendering();
+    const blob = audioBufferToWav(rendered);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+
+    a.href = url;
+    a.download = 'classical-piano-arrangement.wav';
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    $('status').textContent = 'WAV exported successfully.';
+
+  } catch(err) {
+    console.error(err);
+    $('status').textContent = 'WAV export failed: ' + err.message;
+  }
+};
+
+// Audio pitch detection
+function autoCorrelate(buffer,sr){
+  let size = buffer.length;
+  let rms = 0;
+
+  for(let i = 0; i < size; i++) rms += buffer[i] * buffer[i];
+
+  rms = Math.sqrt(rms / size);
+
+  if(rms < 0.012) return null;
+
+  let c = new Array(size).fill(0);
+
+  for(let i = 0; i < size; i++) {
+    for(let j = 0; j < size - i; j++) {
+      c[i] += buffer[j] * buffer[j + i];
+    }
+  }
+
+  let d = 0;
+  while(c[d] > c[d + 1]) d++;
+
+  let max = -1;
+  let pos = -1;
+
+  for(let i = d; i < size; i++) {
+    if(c[i] > max){
+      max = c[i];
+      pos = i;
+    }
+  }
+
+  if(pos <= 0) return null;
+
+  let T0 = pos;
+  let x1 = c[T0 - 1];
+  let x2 = c[T0];
+  let x3 = c[T0 + 1];
+
+  const a = (x1 + x3 - 2 * x2) / 2;
+  const b = (x3 - x1) / 2;
+
+  if(a) T0 = T0 - b / (2 * a);
+
+  const f = sr / T0;
+
+  return f >= 65 && f <= 1500 ? f : null;
+}
+
+async function detectMelodyFromAudioFile(file){
+  $('status').textContent = 'Decoding audio…';
+  $('progress').style.width = '10%';
+
+  const ab = await file.arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const buf = await ctx.decodeAudioData(ab);
+
+  await ctx.close();
+
+  const sr = buf.sampleRate;
+  const ch = buf.getChannelData(0);
+  const win = 2048;
+  const hop = 1024;
+  const minRun = Math.max(2, +$('detectSensitivity').value);
+  const maxFrames = Math.min(Math.floor((ch.length - win) / hop), 2400);
+
+  let det = [];
+  let last = null;
+  let run = 0;
+
+  $('status').textContent = 'Transcribing melody…';
+
+  for(let frame = 0; frame < maxFrames; frame++){
+    const start = frame * hop;
+    const slice = ch.slice(start, start + win);
+    const freq = autoCorrelate(slice, sr);
+    const note = freq ? freqToNote(freq) : null;
+
+    if(note && note === last) {
+      run++;
+    } else {
+      if(last && run >= minRun) det.push(last);
+      last = note;
+      run = note ? 1 : 0;
+    }
+
+    if(frame % 50 === 0){
+      $('progress').style.width = 10 + Math.round(frame / maxFrames * 85) + '%';
+      await new Promise(r => setTimeout(r,0));
+    }
+  }
+
+  if(last && run >= minRun) det.push(last);
+
+  const simple = [];
+
+  for(const n of det) {
+    if(simple[simple.length - 1] !== n) simple.push(n);
+  }
+
+  $('progress').style.width = '100%';
+  setTimeout(() => $('progress').style.width = '0%', 900);
+
+  const capped = simple.slice(0,96);
+
+  if(!capped.length){
+    $('status').textContent = 'No clear pitch found. Try a solo piano, vocal hum, or single-instrument recording.';
+    return;
+  }
+
+  setNotes(capped);
+  $('status').textContent = `Transcribed ${capped.length} notes. Review and refine below.`;
+}
+
+async function handleFile(file){
+  if(!file) return;
+
+  const name = file.name.toLowerCase();
+
+  if(file.type.startsWith('audio/') || name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.m4a')){
+    try {
+      await detectMelodyFromAudioFile(file);
+    } catch(e) {
+      console.error(e);
+      $('status').textContent = 'Could not decode audio. Try MP3, WAV, or M4A.';
+      $('progress').style.width = '0%';
+    }
+    return;
+  }
+
+  const text = await file.text();
+  setNotes(normalizeNotesText(text).split(/\s+/).filter(Boolean));
+  $('status').textContent = 'Score text imported.';
+}
+
+$('chooseFile').onclick = () => $('fileInput').click();
+$('fileInput').onchange = e => handleFile(e.target.files[0]);
+
+['dragenter','dragover'].forEach(evt => {
+  $('drop').addEventListener(evt, e => {
+    e.preventDefault();
+    $('drop').classList.add('drag');
+  });
+});
+
+['dragleave','drop'].forEach(evt => {
+  $('drop').addEventListener(evt, e => {
+    e.preventDefault();
+    $('drop').classList.remove('drag');
+  });
+});
+
+$('drop').addEventListener('drop', e => handleFile(e.dataTransfer.files[0]));
 
 renderChips();
 </script>
