@@ -14,7 +14,9 @@
   --radius:6px;--radius-lg:12px;
   --border:1px solid rgba(201,168,76,.28);
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;min-height:100vh;
   font-family:'Lato',Georgia,serif;
@@ -25,6 +27,7 @@ body{
     linear-gradient(160deg,#0D1B2A 0%,#12263A 40%,#1A1008 100%);
   overflow-x:hidden;
 }
+
 body::before{
   content:'';position:fixed;inset:0;
   background-image:
@@ -32,6 +35,7 @@ body::before{
     repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(201,168,76,.04) 80px);
   pointer-events:none;z-index:0;
 }
+
 body::after{
   content:'';position:fixed;top:0;left:0;right:0;height:3px;
   background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
@@ -43,6 +47,7 @@ header{
   max-width:1180px;margin:0 auto;
   padding:52px 24px 20px;text-align:center;
 }
+
 .eyebrow{
   display:inline-flex;gap:10px;align-items:center;
   padding:8px 20px;
@@ -52,6 +57,7 @@ header{
   font-family:'Lato',sans-serif;font-weight:700;font-size:.82rem;
   letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-light);
 }
+
 h1{
   margin:20px 0 0;
   font-family:'Playfair Display',Georgia,serif;
@@ -60,19 +66,23 @@ h1{
   background:linear-gradient(135deg,var(--gold-light),var(--ivory),var(--gold));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
+
 .tagline{
   font-size:1.05rem;margin:16px auto 0;max-width:760px;
   line-height:1.6;font-weight:300;opacity:.82;
   font-style:italic;color:var(--parchment);
 }
+
 .rule{
   display:flex;align-items:center;gap:16px;
   margin:22px auto 0;max-width:500px;
 }
+
 .rule::before,.rule::after{
   content:'';flex:1;height:1px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
+
 .rule span{color:var(--gold);font-size:1.1rem;}
 
 main{
@@ -81,6 +91,7 @@ main{
   padding:0 24px;
   display:grid;grid-template-columns:1.05fr .95fr;gap:20px;
 }
+
 .card{
   background:rgba(13,27,42,.82);
   border:var(--border);
@@ -91,10 +102,12 @@ main{
   backdrop-filter:blur(18px);
   position:relative;overflow:hidden;
 }
+
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(201,168,76,.6),transparent);
 }
+
 .full{grid-column:1/-1}
 .stack{display:grid;gap:20px}
 
@@ -104,17 +117,21 @@ h2{
   color:var(--gold-light);letter-spacing:.5px;
   display:flex;align-items:center;gap:10px;
 }
+
 h2::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,.4),transparent)}
+
 h3{
   margin:18px 0 10px;font-size:.88rem;
   font-weight:700;letter-spacing:2px;text-transform:uppercase;
   color:rgba(201,168,76,.75);
 }
+
 label{
   display:block;font-weight:700;margin-bottom:8px;
   font-size:.86rem;letter-spacing:1.2px;text-transform:uppercase;
   color:rgba(245,240,232,.72);
 }
+
 textarea,input[type=text]{
   width:100%;
   border:1px solid rgba(201,168,76,.3);
@@ -125,11 +142,14 @@ textarea,input[type=text]{
   font-family:'Lato',monospace;
   transition:.2s;
 }
+
 textarea:focus,input[type=text]:focus{
   border-color:var(--gold);
   box-shadow:0 0 0 3px rgba(201,168,76,.15);
 }
+
 textarea{min-height:110px;resize:vertical;line-height:1.6;}
+
 input[type=range]{
   width:100%;padding:0;
   accent-color:var(--gold);
@@ -137,12 +157,14 @@ input[type=range]{
   background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,.25) 0%);
   border-radius:2px;cursor:pointer;outline:none;
 }
+
 input[type=range]::-webkit-slider-thumb{
   -webkit-appearance:none;width:16px;height:16px;
   border-radius:50%;background:var(--gold);
   border:2px solid var(--deep-navy);
   box-shadow:0 2px 8px rgba(201,168,76,.5);
 }
+
 .hint{font-size:.82rem;opacity:.62;margin:8px 0 0;line-height:1.5;font-style:italic;}
 .small{font-size:.82rem;opacity:.68;line-height:1.42;font-style:italic;}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -161,38 +183,49 @@ button{
   transition:.15s;white-space:nowrap;
   position:relative;overflow:hidden;
 }
+
 button::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(201,168,76,.08),transparent);
   opacity:0;transition:.15s;
 }
+
 button:hover{
   border-color:var(--gold);color:var(--gold-light);
   transform:translateY(-1px);
   box-shadow:0 6px 24px rgba(0,0,0,.4),0 0 0 1px rgba(201,168,76,.2);
 }
+
 button:hover::before{opacity:1}
+
 .primary{
   background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-light));
   border-color:var(--gold-light);color:var(--deep-navy);
   font-size:.92rem;padding:15px 24px;font-weight:900;
   box-shadow:0 8px 28px rgba(201,168,76,.3);
 }
+
 .primary:hover{box-shadow:0 12px 36px rgba(201,168,76,.45);color:var(--deep-navy)}
+
 .dark{
   background:rgba(107,31,42,.6);
   border-color:rgba(139,38,53,.6);color:var(--parchment);
 }
+
 .dark:hover{background:rgba(107,31,42,.85);border-color:var(--crimson)}
+
 .green{
   background:rgba(22,60,40,.6);
   border-color:rgba(46,120,80,.5);color:#7ECFA8;
 }
+
 .green:hover{background:rgba(22,60,40,.9);border-color:#7ECFA8}
+
 .ghost{
   background:transparent;
   border-color:rgba(201,168,76,.2);color:rgba(245,240,232,.6);
 }
+
 .active{
   background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(201,168,76,.12));
   border-color:var(--gold);color:var(--gold-light);
@@ -200,6 +233,7 @@ button:hover::before{opacity:1}
 }
 
 .toggles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
 .toggle{
   display:flex;align-items:center;gap:10px;
   background:rgba(7,19,32,.5);
@@ -208,7 +242,9 @@ button:hover::before{opacity:1}
   border:1px solid rgba(201,168,76,.15);color:rgba(245,240,232,.78);
   cursor:pointer;transition:.15s;
 }
+
 .toggle:hover{border-color:rgba(201,168,76,.35);background:rgba(201,168,76,.06)}
+
 .toggle input[type=checkbox]{
   width:16px;height:16px;accent-color:var(--gold);cursor:pointer;
 }
@@ -221,10 +257,12 @@ button:hover::before{opacity:1}
   border:1px solid rgba(201,168,76,.18);
   position:relative;
 }
+
 .visualizer::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent);
 }
+
 .bar{
   flex:1;min-width:6px;
   border-radius:2px 2px 0 0;
@@ -234,9 +272,11 @@ button:hover::before{opacity:1}
   animation-play-state:paused;
   opacity:.7;
 }
+
 .bar:nth-child(even){animation-duration:1.7s}
 .bar:nth-child(3n){animation-duration:2s}
 .playing .bar{animation-play-state:running;opacity:1}
+
 @keyframes swell{
   from{transform:scaleY(.3);opacity:.5}
   to{transform:scaleY(1.1);opacity:1}
@@ -249,6 +289,7 @@ button:hover::before{opacity:1}
 }
 
 .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:9px;margin-top:12px}
+
 .note-chip{
   border-radius:3px;
   background:rgba(7,19,32,.7);
@@ -257,10 +298,15 @@ button:hover::before{opacity:1}
   font-weight:700;font-size:.9rem;cursor:pointer;user-select:none;
   transition:.15s;color:var(--ivory);
 }
+
 .note-chip:hover{border-color:var(--crimson);color:var(--crimson);background:rgba(107,31,42,.3)}
-.note-chip small{display:block;opacity:.45;font-weight:400;margin-top:3px;font-size:.72rem;letter-spacing:.5px;font-style:italic}
+
+.note-chip small{
+  display:block;opacity:.45;font-weight:400;margin-top:3px;font-size:.72rem;letter-spacing:.5px;font-style:italic;
+}
 
 .pad{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+
 .pad button{
   border-radius:2px;padding:18px 4px 14px;
   background:linear-gradient(180deg,var(--ivory) 70%,#D4CFC4);
@@ -270,6 +316,7 @@ button:hover::before{opacity:1}
   text-transform:none;
   transition:.08s;
 }
+
 .pad button:hover{
   background:linear-gradient(180deg,#fff 70%,#E8E3D8);
   transform:translateY(2px);
@@ -286,6 +333,7 @@ button:hover::before{opacity:1}
 }
 
 .milestones{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+
 .milestone{
   background:rgba(7,19,32,.6);
   border-radius:3px;padding:10px 12px;font-size:.78rem;font-weight:700;
@@ -293,6 +341,7 @@ button:hover::before{opacity:1}
   text-align:center;letter-spacing:.5px;
   color:rgba(245,240,232,.65);
 }
+
 .done{color:var(--gold-light);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.35)}
 
 .drop{
@@ -302,10 +351,15 @@ button:hover::before{opacity:1}
   font-size:.88rem;color:rgba(245,240,232,.65);
   transition:.2s;line-height:1.6;
 }
+
 .drop.drag{border-color:var(--gold);background:rgba(201,168,76,.08);color:var(--gold-light)}
 
 .progressWrap{margin-top:10px;height:3px;border-radius:999px;background:rgba(201,168,76,.15);overflow:hidden}
-.progress{height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));border-radius:999px;transition:width .18s}
+
+.progress{
+  height:100%;width:0%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light));
+  border-radius:999px;transition:width .18s;
+}
 
 footer{
   position:relative;z-index:1;
@@ -313,6 +367,7 @@ footer{
   text-align:center;opacity:.55;font-size:.82rem;line-height:1.6;
   font-style:italic;color:var(--parchment);
 }
+
 footer::before{content:'— ';color:var(--gold);opacity:.6;}
 footer::after{content:' —';color:var(--gold);opacity:.6;}
 
@@ -320,6 +375,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
   main{grid-template-columns:1fr}
   .milestones{grid-template-columns:repeat(3,1fr)}
 }
+
 @media(max-width:640px){
   .grid2,.grid3,.toggles,.pad{grid-template-columns:1fr}
   .milestones{grid-template-columns:repeat(2,1fr)}
@@ -340,7 +396,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
     <div class="milestone done">✓ Style Presets</div>
     <div class="milestone done">✓ Score Editor</div>
     <div class="milestone done">✓ WAV Export</div>
-    <div class="milestone done">✓ Dynamics &amp; Pedal</div>
+    <div class="milestone done">✓ Real Note Lengths</div>
   </div>
 </header>
 
@@ -350,8 +406,9 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
     <div class="grid2">
       <div>
         <label for="notes">Melody Notes</label>
-        <textarea id="notes">E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4 E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 D4 C4 C4</textarea>
-        <p class="hint">Separate notes with spaces — e.g. C4 E4 G4 B4. Click note chips below to remove individual notes.</p>
+        <textarea id="notes">E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 E4:1.5 D4:0.5 D4:2
+E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 D4:1.5 C4:0.5 C4:2</textarea>
+        <p class="hint">Separate notes with spaces. Use optional durations like E4:1, D4:0.5, C4:2 for more realistic phrasing.</p>
       </div>
       <div>
         <label>Import Score or Audio</label>
@@ -437,7 +494,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
         <button class="dark" id="stop">■ &nbsp; Stop</button>
         <button class="green" id="exportWav">Export WAV</button>
       </div>
-      <p class="hint">WAV export renders your full performance — articulation, dynamics, and all layers — directly in the browser.</p>
+      <p class="hint">WAV export renders your full performance — articulation, dynamics, note lengths, and all layers — directly in the browser.</p>
     </section>
 
     <section class="card">
@@ -452,7 +509,7 @@ footer::after{content:' —';color:var(--gold);opacity:.6;}
 
     <section class="card">
       <h2>Score Editor</h2>
-      <p class="small">Click a note chip to remove it. Use the keys above to add notes to the score.</p>
+      <p class="small">Click a note chip to remove it. Chips show the note and its beat length.</p>
       <div class="notes-grid" id="chips"></div>
     </section>
   </section>
@@ -466,6 +523,7 @@ const $ = id => document.getElementById(id);
 const noteMap = {
   C:0,"C#":1,DB:1,D:2,"D#":3,EB:3,E:4,F:5,"F#":6,GB:6,G:7,"G#":8,AB:8,A:9,"A#":10,BB:10,B:11
 };
+
 const midiNames = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 
 const presets = {
@@ -568,13 +626,42 @@ for(let i = 0; i < 38; i++){
 function normalizeNotesText(t){
   return t
     .replace(/[,\r\t]+/g,' ')
-    .replace(/[^A-Ga-g0-9#bB\s]/g,' ')
+    .replace(/[^A-Ga-g0-9#bB:\.\s]/g,' ')
     .replace(/\s+/g,' ')
     .trim();
 }
 
 function getNotes(){
   return normalizeNotesText($('notes').value).split(/\s+/).filter(Boolean);
+}
+
+function parseNoteToken(token){
+  const clean = token.trim();
+  if (!clean) return null;
+
+  const parts = clean.split(':');
+  const note = parts[0];
+  let beats = 1;
+
+  if (parts.length > 1) {
+    beats = parseFloat(parts[1]);
+    if (!Number.isFinite(beats) || beats <= 0) beats = 1;
+  }
+
+  beats = Math.max(0.125, Math.min(8, beats));
+
+  return {
+    raw: clean,
+    note,
+    beats,
+    freq: noteToFreq(note)
+  };
+}
+
+function getParsedNotes(){
+  return getNotes()
+    .map(parseNoteToken)
+    .filter(Boolean);
 }
 
 function setNotes(n){
@@ -584,7 +671,7 @@ function setNotes(n){
 
 function addNote(n){
   const a = getNotes();
-  a.push(n);
+  a.push(n + ':1');
   setNotes(a);
 }
 
@@ -618,12 +705,12 @@ function renderChips(){
   const c = $('chips');
   c.innerHTML = '';
 
-  getNotes().forEach((n,i) => {
+  getParsedNotes().forEach((item,i) => {
     const d = document.createElement('div');
-    const isValid = !!noteToFreq(n);
+    const isValid = !!item.freq;
 
     d.className = 'note-chip';
-    d.innerHTML = n + `<small>${isValid ? 'remove' : 'invalid'}</small>`;
+    d.innerHTML = `${item.note}<small>${isValid ? item.beats + ' beat' + (item.beats === 1 ? '' : 's') : 'invalid'}</small>`;
 
     if (!isValid) {
       d.style.borderColor = 'rgba(139,38,53,.9)';
@@ -814,18 +901,30 @@ function metronomeClick(ctx, dest, time, strong = false){
   osc.stop(time + 0.05);
 }
 
-function scheduleSong(ctx, dest, start, notes, s){
+function scheduleSong(ctx, dest, start, noteEvents, s){
   const beat = 60 / s.tempo;
-  const dur = beat * s.noteLength;
-  const total = notes.length * beat + dur + 1.0;
+  let cursor = start;
+
+  const totalBeats = noteEvents.reduce((sum, ev) => sum + ev.beats, 0);
+  const total = totalBeats * beat + beat * s.noteLength + 1.0;
 
   if(s.ocean) addReverb(ctx, dest, start, total);
 
-  notes.forEach((note,i) => {
-    const f = note;
-    const t = start + i * beat + (i % 2 ? beat * s.swing : 0) + (s.humanize ? (Math.random() * 0.022 - 0.011) : 0);
+  noteEvents.forEach((ev,i) => {
+    const f = ev.freq;
+    const noteBeats = ev.beats;
+    const rawDuration = noteBeats * beat;
+    const dur = rawDuration * s.noteLength;
+
+    const rubatoOffset =
+      (i % 2 ? beat * s.swing * 0.35 : 0) +
+      (s.humanize ? (Math.random() * 0.018 - 0.009) : 0);
+
+    const t = cursor + rubatoOffset;
+
     const vel = s.humanize ? 0.66 + Math.random() * 0.28 : 0.84;
-    const dynamics = s.humanize ? vel * (0.85 + 0.3 * Math.sin(i * 0.4 + (Math.random() * 0.2))) : vel;
+    const phraseShape = 0.9 + 0.18 * Math.sin((i / Math.max(1, noteEvents.length - 1)) * Math.PI);
+    const dynamics = s.humanize ? vel * phraseShape : vel;
 
     pianoPan(ctx, dest, f, t, dur, dynamics, s);
 
@@ -835,12 +934,14 @@ function scheduleSong(ctx, dest, start, notes, s){
     }
 
     if(s.bass && i % 2 === 0){
-      pianoPan(ctx, dest, f / 4, t, dur * 1.12, 0.22, s);
+      pianoPan(ctx, dest, f / 4, t, dur * 1.1, 0.22, s);
     }
 
     if(s.percussion){
       metronomeClick(ctx, dest, t, i % 4 === 0);
     }
+
+    cursor += rawDuration;
   });
 
   return total;
@@ -882,12 +983,10 @@ async function playSong(){
   try {
     stopAll();
 
-    const valid = getNotes()
-      .map(n => ({ n, f: noteToFreq(n) }))
-      .filter(x => x.f);
+    const valid = getParsedNotes().filter(x => x.freq);
 
     if(!valid.length){
-      $('status').textContent = 'Enter valid notes like C4 E4 G4 B4 first.';
+      $('status').textContent = 'Enter valid notes like C4:1 E4:1 G4:2 first.';
       return;
     }
 
@@ -903,8 +1002,7 @@ async function playSong(){
     master.connect(ctx.destination);
 
     const s = getSettings();
-    const freqs = valid.map(x => x.f);
-    const total = scheduleSong(ctx, master, ctx.currentTime + 0.15, freqs, s);
+    const total = scheduleSong(ctx, master, ctx.currentTime + 0.15, valid, s);
 
     $('visualizer').classList.add('playing');
     $('status').textContent = 'Performing your classical arrangement…';
@@ -948,12 +1046,14 @@ $('generate').onclick = () => {
   for(let i = 0; i < len; i++){
     const step = Math.random() < 0.6 ? Math.floor(Math.random() * 3) - 1 : Math.floor(Math.random() * 5) - 2;
     idx = Math.max(0, Math.min(scale.length - 1, idx + step));
-    mel.push(scale[idx]);
+
+    const dur = Math.random() < 0.18 ? 2 : (Math.random() < 0.28 ? 0.5 : 1);
+    mel.push(scale[idx] + ':' + dur);
   }
 
-  mel.push(scale[0]);
+  mel.push(scale[0] + ':2');
   setNotes(mel);
-  $('status').textContent = 'Classical melody generated.';
+  $('status').textContent = 'Classical melody generated with varied note lengths.';
 };
 
 $('clear').onclick = () => setNotes([]);
@@ -1058,7 +1158,7 @@ function audioBufferToWav(buffer){
 }
 
 $('exportWav').onclick = async () => {
-  const notes = getNotes().filter(n => noteToFreq(n));
+  const notes = getParsedNotes().filter(x => x.freq);
 
   if(!notes.length){
     $('status').textContent = 'Add valid notes before exporting.';
@@ -1070,13 +1170,12 @@ $('exportWav').onclick = async () => {
 
     const s = getSettings();
     const beat = 60 / s.tempo;
-    const duration = notes.length * beat + beat * s.noteLength + 1.5;
+    const duration = notes.reduce((sum, ev) => sum + ev.beats, 0) * beat + beat * s.noteLength + 1.5;
     const sr = 44100;
 
     const off = new OfflineAudioContext(2, Math.ceil(duration * sr), sr);
-    const freqs = notes.map(noteToFreq).filter(Boolean);
 
-    scheduleSong(off, off.destination, 0.1, freqs, s);
+    scheduleSong(off, off.destination, 0.1, notes, s);
 
     const rendered = await off.startRendering();
     const blob = audioBufferToWav(rendered);
@@ -1181,7 +1280,7 @@ async function detectMelodyFromAudioFile(file){
     if(note && note === last) {
       run++;
     } else {
-      if(last && run >= minRun) det.push(last);
+      if(last && run >= minRun) det.push(last + ':1');
       last = note;
       run = note ? 1 : 0;
     }
@@ -1192,7 +1291,7 @@ async function detectMelodyFromAudioFile(file){
     }
   }
 
-  if(last && run >= minRun) det.push(last);
+  if(last && run >= minRun) det.push(last + ':1');
 
   const simple = [];
 
